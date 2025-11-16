@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บทเรียนที่ 1: การออกแบบขั้นตอนการทำงาน</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans Thai', sans-serif; }
+    /* .exercise-iframe is no longer needed */
+  </style>
+</head>
+<body class="bg-gray-100 flex flex-col h-screen">
+
+<!-- ส่วนหัวของเว็บ -->
+<header class="bg-white shadow-md w-full">
+  <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+    <div>
+      <h2 class="text-xl font-semibold text-gray-700">หน่วยที่ 2: Python</h2>
+      <h1 class="text-2xl font-bold text-blue-800">โมดูลที่ 1: การออกแบบขั้นตอนการทำงาน</h1>
+    </div>
+    <a href="index.html" class="text-blue-600 hover:underline">กลับหน้าหลัก</a>
+  </div>
+</header>
+
+<!-- เนื้อหาหลัก (2 คอลัมน์) -->
+<main class="flex-1 container mx-auto px-6 py-6 flex flex-col md:flex-row gap-6">
+
+  <!-- คอลัมน์ซ้าย: วิดีโอและสถานะ -->
+  <div class="w-full md:w-1/2 bg-white rounded-xl shadow-lg p-6">
+    <h3 class="text-xl font-bold text-gray-800 mb-4">🎬 1. ดูวิดีโอ</h3>
+
+    <!-- พื้นที่สำหรับ YouTube Player -->
+    <!-- เราจะใช้ ID "player" นี้ใน JavaScript -->
+    <div class="aspect-video bg-gray-800 rounded-lg mb-4">
+      <div id="player"></div>
+    </div>
+
+    <!-- ระบบติดตามความคืบหน้า -->
+    <div>
+      <h4 class="font-semibold text-gray-700">ความคืบหน้า:</h4>
+      <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2 mb-1">
+        <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+      </div>
+      <div id="video-status" class="text-sm text-gray-500">สถานะ: ยังไม่เริ่มเรียน</div>
+    </div>
+  </div>
+
+  <!-- คอลัมน์ขวา: แบบฝึกหัด (ผังงาน) -->
+  <div class="w-full md:w-1/2 bg-white rounded-xl shadow-lg p-6 flex flex-col">
+    <h3 class="text-xl font-bold text-gray-800 mb-4">✍️ 2. แบบฝึกหัด (Practice)</h3>
+    <p class="text-gray-600 mb-4">
+      <strong>โจทย์:</strong> ให้นักเรียนวาดผังงาน (Flowchart) "ขั้นตอนการทอดไข่เจียว"
+    </p>
+
+    <!-- ขั้นตอนที่ 1: เปิดเครื่องมือ -->
+    <div class="mb-4">
+      <p class="text-gray-700 mb-2"><strong>ขั้นตอนที่ 1:</strong> เปิดเครื่องมือสร้างผังงาน (ในแท็บใหม่)</p>
+      <a href="https://app.diagrams.net/" target="_blank" class="inline-block bg-yellow-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-yellow-600 transition-colors">
+        คลิกที่นี่เพื่อเปิด diagrams.net
+      </a>
+      <p class="text-sm text-gray-500 mt-2">เมื่อสร้างเสร็จแล้ว, ให้ Export (ส่งออก) เป็นไฟล์ `.png` หรือ `.jpg` แล้วมาอัปโหลดในขั้นตอนที่ 2 ครับ</p>
+    </div>
+
+    <!-- ขั้นตอนที่ 2: อัปโหลดไฟล์ -->
+    <div class="border-t border-gray-200 pt-4 flex-1">
+      <p class="text-gray-700 mb-2"><strong>ขั้นตอนที่ 2:</strong> อัปโหลดผังงานของคุณ</p>
+      <input type="file" id="file-upload" class="block w-full text-sm text-gray-500
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-full file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-blue-50 file:text-blue-700
+                    hover:file:bg-blue-100"
+             accept="image/png, image/jpeg"
+      >
+      <div id="file-status" class="text-sm text-green-600 mt-2 hidden"></div>
+    </div>
+  </div>
+
+</main>
+
+<!-- แถบส่งงาน (Footer) -->
+<footer class="bg-white shadow-inner w-full p-4 mt-auto">
+  <div class="container mx-auto px-6 flex justify-between items-center">
+    <div id="submit-status" class="text-gray-500">
+      กรุณาดูวิดีโอให้จบก่อนส่งงาน
+    </div>
+    <div>
+      <button id="submit-btn" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
+        ส่งงาน
+      </button>
+      <button id="next-btn" class="bg-gray-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-600 transition-colors ml-4 hidden">
+        ไปบทเรียนถัดไป
+      </button>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // 1. โหลด YouTube IFrame API
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  var player;
+  var progressInterval;
+  const submitBtn = document.getElementById('submit-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const videoStatus = document.getElementById('video-status');
+  const submitStatus = document.getElementById('submit-status');
+  const progressBar = document.getElementById('progress-bar');
+
+  // --- ตัวแปรใหม่สำหรับติดตามสถานะ ---
+  const fileUpload = document.getElementById('file-upload');
+  const fileStatus = document.getElementById('file-status');
+  let videoWatched = false;
+  let fileUploaded = false;
+
+  // 2. ฟังก์ชันนี้จะทำงานเมื่อ API พร้อม
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '100%',
+      width: '100%',
+      videoId: 'VudDfgbWpE0', // <-- *** ใส่ Video ID ของคุณที่นี่ ***
+      playerVars: {
+        'playsinline': 1,
+        'modestbranding': 1, // ซ่อนโลโก้ YouTube
+        'rel': 0 // ไม่แสดงวิดีโอที่เกี่ยวข้อง
+      },
+      events: {
+        'onStateChange': onPlayerStateChange
+      }
+    });
+  }
+
+  // 3. ฟังก์ชันนี้ทำงานเมื่อสถานะวิดีโอเปลี่ยน
+  function onPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.PLAYING) {
+      // ถ้าวิดีโอเล่น: เริ่มอัปเดตแถบความคืบหน้า
+      videoStatus.textContent = "สถานะ: กำลังเรียน...";
+      progressInterval = setInterval(updateProgress, 1000); // อัปเดตทุก 1 วินาที
+    } else {
+      // ถ้าวิดีโอ หยุด หรือ จบ: ให้หยุดอัปเดต
+      clearInterval(progressInterval);
+    }
+
+    if (event.data == YT.PlayerState.ENDED) {
+      // ถ้าวิดีโอจบ
+      videoStatus.textContent = "สถานะ: ✅ เรียนจบแล้ว!";
+      videoStatus.classList.add('text-green-600', 'font-semibold');
+      progressBar.style.width = '100%';
+
+      videoWatched = true; // --- อัปเดตสถานะ
+      checkEnableSubmit(); // --- ตรวจสอบเงื่อนไขเพื่อเปิดปุ่ม
+    }
+  }
+
+  // 4. ฟังก์ชันอัปเดตแถบความคืบหน้า
+  function updateProgress() {
+    if (player && player.getPlayerState() == YT.PlayerState.PLAYING) {
+      var currentTime = player.getCurrentTime();
+      var duration = player.getDuration();
+      var percentage = (currentTime / duration) * 100;
+      progressBar.style.width = percentage + '%';
+    }
+  }
+
+  // --- 5. ฟังก์ชันใหม่: ตรวจสอบการอัปโหลดไฟล์ ---
+  fileUpload.addEventListener('change', function() {
+    if (fileUpload.files.length > 0) {
+      fileUploaded = true;
+      fileStatus.textContent = `✅ อัปโหลดไฟล์ '${fileUpload.files[0].name}' เรียบร้อย!`;
+      fileStatus.classList.remove('hidden');
+      checkEnableSubmit();
+    } else {
+      fileUploaded = false;
+      fileStatus.classList.add('hidden');
+      checkEnableSubmit();
+    }
+  });
+
+  // --- 6. ฟังก์ชันใหม่: ตรวจสอบเงื่อนไขเพื่อเปิดปุ่ม ---
+  function checkEnableSubmit() {
+    if (videoWatched && fileUploaded) {
+      submitBtn.disabled = false;
+      submitStatus.textContent = "✅ พร้อมส่งงานแล้ว!";
+      submitStatus.classList.add('text-green-600');
+    } else if (videoWatched && !fileUploaded) {
+      submitStatus.textContent = "✅ ดูวิดีโอจบแล้ว! กรุณาอัปโหลดผังงาน";
+      submitStatus.classList.add('text-green-600');
+    } else {
+      submitStatus.textContent = "กรุณาดูวิดีโอให้จบก่อนส่งงาน";
+      submitStatus.classList.remove('text-green-600');
+    }
+  }
+
+  // 7. Logic การส่งงาน (ปรับปรุงจากเดิม)
+  submitBtn.addEventListener('click', function() {
+    // --- ระบบตรวจคำตอบ (Auto-Grader) ---
+    // ในระบบจริง: ที่จุดนี้ เราจะส่ง fileUpload.files[0] ไปยังเซิร์ฟเวอร์
+    // แต่ตอนนี้ เราจะจำลองว่าส่งสำเร็จ
+
+    submitStatus.textContent = "🎉 ส่งงานสำเร็จแล้ว! ไปบทเรียนต่อไปได้";
+    submitBtn.disabled = true;
+    submitBtn.textContent = "ส่งแล้ว";
+
+    // แสดงปุ่ม "บทเรียนถัดไป"
+    nextBtn.classList.remove('hidden');
+  });
+
+  nextBtn.addEventListener('click', function() {
+    // ในระบบจริง: ให้ลิงก์ไปหน้า module_2.html
+    alert("กำลังไปบทเรียนถัดไป...");
+    window.location.href = 'module_2.html';
+  });
+
+</script>
+</body>
+</html>

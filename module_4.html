@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บทเรียนที่ 4: การใช้งานโปรแกรม Mu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans Thai', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-100 flex flex-col h-screen">
+
+<!-- ส่วนหัวของเว็บ -->
+<header class="bg-white shadow-md w-full">
+  <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+    <div>
+      <h2 class="text-xl font-semibold text-gray-700">หน่วยที่ 2: Python</h2>
+      <h1 class="text-2xl font-bold text-blue-800">โมดูลที่ 4: การใช้งานโปรแกรม Mu</h1>
+    </div>
+    <a href="index.html" class="text-blue-600 hover:underline">กลับหน้าหลัก</a>
+  </div>
+</header>
+
+<!-- เนื้อหาหลัก (2 คอลัมน์) -->
+<main class="flex-1 container mx-auto px-6 py-6 flex flex-col md:flex-row gap-6 overflow-y-auto">
+
+  <!-- คอลัมน์ซ้าย: วิดีโอและสถานะ -->
+  <div class="w-full md:w-1/2 bg-white rounded-xl shadow-lg p-6">
+    <h3 class="text-xl font-bold text-gray-800 mb-4">🎬 1. ดูวิดีโอ</h3>
+
+    <!-- พื้นที่สำหรับ YouTube Player -->
+    <div class="aspect-video bg-gray-800 rounded-lg mb-4">
+      <div id="player"></div>
+    </div>
+
+    <!-- ระบบติดตามความคืบหน้า -->
+    <div>
+      <h4 class="font-semibold text-gray-700">ความคืบหน้า:</h4>
+      <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2 mb-1">
+        <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+      </div>
+      <div id="video-status" class="text-sm text-gray-500">สถานะ: ยังไม่เริ่มเรียน</div>
+    </div>
+  </div>
+
+  <!-- คอลัมน์ขวา: ภารกิจติดตั้งโปรแกรม -->
+  <div class="w-full md:w-1/2 bg-white rounded-xl shadow-lg p-6 flex flex-col">
+
+    <!-- 1. กล่องสนทนาคุณครู -->
+    <div class="flex items-start gap-4 mb-6">
+      <!-- รูปคุณครู (จากลิงก์ที่คุณให้มา) -->
+      <img src="https://i.ibb.co/vvmFnzs5/2.png" alt="คุณครู" class="rounded-full w-24 h-24 border-4 border-white shadow-md flex-shrink-0 bg-white object-cover">
+
+      <!-- กล่องคำพูด -->
+      <div class="relative bg-blue-50 border border-blue-200 p-4 rounded-xl shadow-sm mt-4">
+        <!-- หางของกล่องคำพูด -->
+        <div class="absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-0 h-0
+                                border-t-[10px] border-t-transparent
+                                border-r-[12px] border-r-blue-50
+                                border-b-[10px] border-b-transparent"
+             style="filter: drop-shadow(-1px 0px 1px rgba(0,0,0,0.05));">
+        </div>
+
+        <h3 class="text-xl font-bold text-gray-800 mb-2">🛠️ 2. ภารกิจ: ติดตั้งโปรแกรม</h3>
+        <p class="text-gray-700">
+          ถึงเวลาลงมือจริงแล้วครับ! ให้นักเรียนทำตาม 3 ขั้นตอนนี้ เพื่อติดตั้งโปรแกรม Mu ให้พร้อมสำหรับเขียนโค้ดครับ
+        </p>
+      </div>
+    </div>
+
+    <!-- 2. ขั้นตอนการทำงาน -->
+    <div class="space-y-6 flex-1">
+      <!-- Step 1 -->
+      <div class="flex gap-3">
+        <div class="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">1</div>
+        <div>
+          <h4 class="font-semibold text-gray-800">ดาวน์โหลดและติดตั้ง</h4>
+          <p class="text-sm text-gray-600 mb-2">ไปที่เว็บไซต์ Mu Editor แล้วดาวน์โหลดตัวติดตั้งสำหรับ Windows หรือ Mac</p>
+          <a href="https://codewith.mu/en/download" target="_blank" class="inline-flex items-center text-sm text-white bg-gray-700 hover:bg-gray-800 px-3 py-1.5 rounded transition-colors">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            ไปที่หน้าดาวน์โหลด
+          </a>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="flex gap-3">
+        <div class="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">2</div>
+        <div>
+          <h4 class="font-semibold text-gray-800">ทดลองรันโค้ดแรก</h4>
+          <p class="text-sm text-gray-600">
+            เปิดโปรแกรม Mu ขึ้นมา พิมพ์โค้ด <code>print("Hello World")</code> แล้วกดปุ่ม <strong>Run</strong>
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 3 (Upload) -->
+      <div class="flex gap-3">
+        <div class="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">3</div>
+        <div class="w-full">
+          <h4 class="font-semibold text-gray-800">ส่งหลักฐาน (แคปหน้าจอ)</h4>
+          <p class="text-sm text-gray-600 mb-2">แคปเจอร์หน้าจอโปรแกรม Mu ที่แสดงผลลัพธ์ แล้วอัปโหลดที่นี่ครับ</p>
+
+          <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:bg-gray-50 transition-colors cursor-pointer relative">
+            <input type="file" id="file-upload" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*">
+            <div id="upload-placeholder">
+              <svg class="mx-auto h-8 w-8 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <p class="text-sm text-gray-500 mt-1">คลิกเพื่ออัปโหลดรูปภาพ (.png, .jpg)</p>
+            </div>
+            <div id="file-info" class="hidden">
+              <p class="text-sm text-green-600 font-semibold flex items-center justify-center">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                <span id="filename"></span>
+              </p>
+              <p class="text-xs text-gray-400 mt-1">คลิกเพื่อเปลี่ยนไฟล์</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. ผลลัพธ์รวม (กล่องคำพูดตอบกลับจากครู) -->
+    <div id="teacher-feedback" class="mt-4 flex items-start gap-4 hidden">
+      <!-- รูปคุณครู (ซ้ำ) -->
+      <img src="https://i.ibb.co/vvmFnzs5/2.png" alt="คุณครู" class="rounded-full w-24 h-24 border-4 border-white shadow-md flex-shrink-0 bg-white object-cover">
+
+      <div id="teacher-bubble-response" class="relative bg-green-100 border border-green-300 p-4 rounded-xl shadow-sm mt-4">
+        <div class="absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-0 h-0 border-t-[10px] border-t-transparent border-r-[12px] border-r-green-100 border-b-[10px] border-b-transparent" style="filter: drop-shadow(-1px 0px 1px rgba(0,0,0,0.05));"></div>
+        <p id="teacher-message" class="text-gray-700"></p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- แถบส่งงาน (Footer) -->
+<footer class="bg-white shadow-inner w-full p-4 mt-auto">
+  <div class="container mx-auto px-6 flex justify-between items-center">
+    <div id="submit-status" class="text-gray-500">
+      กรุณาดูวิดีโอให้จบก่อน
+    </div>
+    <div>
+      <button id="submit-btn" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
+        ส่งงาน
+      </button>
+      <button id="next-btn" class="bg-gray-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-600 transition-colors ml-4 hidden">
+        ไปบทเรียนถัดไป
+      </button>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // 1. โหลด YouTube IFrame API
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  var player;
+  var progressInterval;
+  const submitBtn = document.getElementById('submit-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const videoStatus = document.getElementById('video-status');
+  const submitStatus = document.getElementById('submit-status');
+  const progressBar = document.getElementById('progress-bar');
+
+  // --- ตัวแปรสำหรับ File Upload ---
+  const fileInput = document.getElementById('file-upload');
+  const uploadPlaceholder = document.getElementById('upload-placeholder');
+  const fileInfo = document.getElementById('file-info');
+  const fileNameSpan = document.getElementById('filename');
+
+  // --- ตัวแปรสำหรับ Teacher Feedback ---
+  const teacherFeedback = document.getElementById('teacher-feedback');
+  const teacherMessage = document.getElementById('teacher-message');
+
+  let videoWatched = false;
+  let fileUploaded = false;
+
+  // 2. ฟังก์ชันนี้จะทำงานเมื่อ API พร้อม
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '100%',
+      width: '100%',
+      videoId: '03J8uc_OQSk', // <-- *** ใส่ Video ID โมดูล 4 (วิธีใช้ Mu) ที่นี่ ***
+      playerVars: { 'playsinline': 1, 'modestbranding': 1, 'rel': 0 },
+      events: { 'onStateChange': onPlayerStateChange }
+    });
+  }
+
+  // 3. ตรวจสถานะวิดีโอ
+  function onPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.PLAYING) {
+      videoStatus.textContent = "สถานะ: กำลังเรียน...";
+      progressInterval = setInterval(updateProgress, 1000);
+    } else {
+      clearInterval(progressInterval);
+    }
+    if (event.data == YT.PlayerState.ENDED) {
+      videoStatus.textContent = "สถานะ: ✅ เรียนจบแล้ว!";
+      videoStatus.classList.add('text-green-600', 'font-semibold');
+      progressBar.style.width = '100%';
+      videoWatched = true;
+      checkEnableSubmit();
+    }
+  }
+
+  function updateProgress() {
+    if (player && player.getPlayerState() == YT.PlayerState.PLAYING) {
+      var percentage = (player.getCurrentTime() / player.getDuration()) * 100;
+      progressBar.style.width = percentage + '%';
+    }
+  }
+
+  // --- 4. จัดการ File Upload UI ---
+  fileInput.addEventListener('change', function() {
+    if (this.files && this.files[0]) {
+      fileUploaded = true;
+      fileNameSpan.textContent = this.files[0].name;
+      uploadPlaceholder.classList.add('hidden');
+      fileInfo.classList.remove('hidden');
+      checkEnableSubmit();
+    }
+  });
+
+  // --- 5. ตรวจสอบเงื่อนไขเพื่อเปิดปุ่ม ---
+  function checkEnableSubmit() {
+    if (videoWatched && fileUploaded) {
+      submitBtn.disabled = false;
+      submitStatus.textContent = "✅ พร้อมส่งงานแล้ว!";
+      submitStatus.classList.add('text-green-600');
+    } else if (videoWatched && !fileUploaded) {
+      submitStatus.textContent = "✅ ดูวิดีโอจบแล้ว! (รออัปโหลดภาพ)";
+      submitStatus.classList.add('text-green-600');
+    } else if (!videoWatched && fileUploaded) {
+      submitStatus.textContent = "อัปโหลดภาพแล้ว (รอวิดีโอจบ)";
+      submitStatus.classList.remove('text-green-600');
+    } else {
+      submitStatus.textContent = "กรุณาดูวิดีโอและส่งงาน";
+      submitStatus.classList.remove('text-green-600');
+    }
+  }
+
+  // --- 6. Logic การส่งงาน ---
+  submitBtn.addEventListener('click', function() {
+    // จำลองการส่งสำเร็จ
+    teacherFeedback.classList.remove('hidden');
+    teacherMessage.innerHTML = "🎉 <strong>ติดตั้งสำเร็จ!</strong><br>คุณพร้อมที่จะเป็นโปรแกรมเมอร์แล้ว เตรียมตัวลุยโค้ดจริงในบทต่อไปได้เลย!";
+
+    submitStatus.textContent = "🎉 ส่งงานเรียบร้อย!";
+    submitBtn.disabled = true;
+    submitBtn.textContent = "ส่งแล้ว";
+    nextBtn.classList.remove('hidden');
+  });
+
+  nextBtn.addEventListener('click', function() {
+    alert("กำลังไปบทเรียนถัดไป...");
+    window.location.href = 'module_5.html';
+  });
+
+</script>
+</body>
+</html>

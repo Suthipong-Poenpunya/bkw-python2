@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>หน่วยที่ 2: การเขียนโปรแกรม Python</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Skulpt (Python in Browser) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/skulpt/1.2.0/skulpt.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/skulpt/1.2.0/skulpt-stdlib.min.js"></script>
+
+  <!-- ACE Code Editor -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.33.0/ace.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.33.0/mode-python.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.33.0/theme-tomorrow_night.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Sarabun', 'Inter', 'sans-serif'],
+          },
+          animation: {
+            'float': 'float 3s ease-in-out infinite',
+            'fade-in': 'fadeIn 0.5s ease-out forwards',
+            'slide-up': 'slideUp 0.5s ease-out forwards',
+          },
+          keyframes: {
+            float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
+            fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+            slideUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } }
+          }
+        },
+      },
+    }
+  </script>
+  <style>
+    body { font-family: 'Sarabun', sans-serif; background-color: #f1f5f9; }
+
+    /* Sidebar & Content */
+    .sidebar-link.active {
+      background-color: #4f46e5; /* indigo-600 */
+      color: #ffffff;
+      box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+    }
+    .content-page { display: none; animation: fadeIn 0.4s ease-out; }
+    .content-page.active { display: block; }
+
+    /* Code Blocks & Flowchart */
+    .code-block {
+      background-color: #1e293b; color: #e2e8f0;
+      padding: 16px; border-radius: 8px;
+      font-family: 'Courier New', monospace; overflow-x: auto;
+    }
+    .code-block .comment { color: #6a9955; }
+    .code-block .string { color: #ce9178; }
+    .code-block .keyword { color: #569cd6; }
+    .code-block .number { color: #b5cea8; }
+    .code-block .function { color: #dcdcaa; }
+
+    .flow-symbol {
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid #475569; padding: 10px; margin: 8px auto;
+      min-height: 50px; min-width: 120px; max-width: 180px;
+      font-weight: 600; font-size: 0.9rem; background: white;
+      border-radius: 8px;
+    }
+    .flow-start { border-radius: 25px; background-color: #dcfce7; border-color: #16a34a; }
+    .flow-io { transform: skewX(-15deg); background-color: #ffedd5; border-color: #ea580c; }
+    .flow-process { background-color: #dbeafe; border-color: #2563eb; }
+    .flow-arrow { text-align: center; color: #94a3b8; font-size: 1.2rem; line-height: 1; }
+
+    /* Playground */
+    .playground-output {
+      background-color: #0f172a; color: #22c55e;
+      padding: 1rem; border-radius: 0.5rem;
+      font-family: monospace; min-height: 80px;
+      white-space: pre-wrap;
+    }
+    .loader {
+      border: 3px solid #f3f3f3; border-top: 3px solid #3498db;
+      border-radius: 50%; width: 20px; height: 20px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  </style>
+</head>
+<body class="text-slate-800 h-screen overflow-hidden flex">
+
+<!-- ========================================== -->
+<!-- 1. Registration Screen (Overlay)           -->
+<!-- ========================================== -->
+<div id="registration-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/95 backdrop-blur-sm p-4 hidden">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-slide-up border border-slate-200">
+    <div class="bg-indigo-600 p-8 text-center relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-indigo-600 to-purple-700 opacity-90"></div>
+      <div class="relative z-10">
+        <img src="https://i.ibb.co/vvmFnzs5/2.png" alt="Teacher" class="w-20 h-20 rounded-full border-4 border-white/30 shadow-lg mx-auto mb-3 object-cover bg-white">
+        <h2 class="text-2xl font-bold text-white">ลงทะเบียนเข้าเรียน</h2>
+        <p class="text-indigo-100 text-sm">ยินดีต้อนรับสู่วิชาวิทยาการคำนวณ ม.2</p>
+      </div>
+    </div>
+    <div class="p-8">
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label class="text-xs font-semibold text-slate-500 uppercase">ชื่อ-นามสกุล</label>
+          <input type="text" id="student-name" required class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" placeholder="ด.ช. รักเรียน ...">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs font-semibold text-slate-500 uppercase">ชั้น (ม.2/...)</label>
+            <input type="text" id="student-class" required class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="1">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-slate-500 uppercase">เลขที่</label>
+            <input type="number" id="student-no" required class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="15">
+          </div>
+        </div>
+        <button id="submit-btn" type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition-all flex justify-center items-center gap-2 mt-2">
+          <span>เข้าสู่บทเรียน</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          <div id="btn-loader" class="loader hidden border-white border-t-transparent"></div>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 2. Main App Interface                      -->
+<!-- ========================================== -->
+
+<!-- Sidebar -->
+<aside class="w-64 bg-slate-900 text-slate-300 flex flex-col h-full shadow-xl z-20 transition-transform transform md:translate-x-0 -translate-x-full absolute md:relative" id="sidebar">
+  <div class="p-6 border-b border-slate-800 flex items-center gap-3">
+    <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-500/30">
+      PY
+    </div>
+    <div>
+      <h1 class="text-white font-bold leading-tight">การเขียนโปรแกรมด้วยภาษา Python</h1>
+      <p class="text-xs text-slate-500">หน่วยที่ 2</p>
+    </div>
+  </div>
+
+  <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+    <a href="#" onclick="showPage('home')" class="sidebar-link active flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-all">
+      <i data-lucide="home" class="w-5 h-5"></i>
+      <span>หน้าหลัก</span>
+    </a>
+
+    <div class="pt-4 pb-2 text-xs font-bold text-slate-500 uppercase tracking-wider px-4">บทเรียน</div>
+
+    <a href="#" onclick="showPage('module-1')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white transition-all">
+      <i data-lucide="workflow" class="w-5 h-5"></i> <span>1. อัลกอริทึม</span>
+    </a>
+    <a href="#" onclick="showPage('module-2')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white transition-all">
+      <i data-lucide="box" class="w-5 h-5"></i> <span>2. ตัวแปร</span>
+    </a>
+    <a href="#" onclick="showPage('module-3')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white transition-all">
+      <i data-lucide="calculator" class="w-5 h-5"></i> <span>3. ตัวดำเนินการ</span>
+    </a>
+    <a href="#" onclick="showPage('module-4')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white transition-all">
+      <i data-lucide="terminal" class="w-5 h-5"></i> <span>4. โปรแกรม Mu</span>
+    </a>
+    <a href="#" onclick="showPage('module-5')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white transition-all">
+      <i data-lucide="message-square" class="w-5 h-5"></i> <span>5. Input / Output</span>
+    </a>
+    <a href="#" onclick="showPage('module-6')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white transition-all">
+      <i data-lucide="arrow-down-circle" class="w-5 h-5"></i> <span>6. แบบเรียงลำดับ</span>
+    </a>
+    <a href="#" onclick="showPage('module-7')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white transition-all">
+      <i data-lucide="git-branch" class="w-5 h-5"></i> <span>7. แบบเลือกทำ</span>
+    </a>
+
+    <div class="pt-4 pb-2 text-xs font-bold text-slate-500 uppercase tracking-wider px-4">กิจกรรม</div>
+
+    <a href="#" onclick="showPage('playground')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white transition-all">
+      <i data-lucide="code" class="w-5 h-5 text-green-400"></i> <span>ลองเขียนโค้ด</span>
+    </a>
+    <a href="#" onclick="showPage('exam')" class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white transition-all">
+      <i data-lucide="trophy" class="w-5 h-5 text-yellow-400"></i> <span>แบบทดสอบท้ายบท</span>
+    </a>
+  </nav>
+
+  <div class="p-4 border-t border-slate-800">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-xs font-bold" id="user-avatar">ST</div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-white truncate" id="sidebar-name">ผู้เรียน</p>
+        <p class="text-xs text-slate-500 truncate" id="sidebar-class"></p>
+      </div>
+      <button onclick="logout()" class="text-slate-500 hover:text-red-400"><i data-lucide="log-out" class="w-4 h-4"></i></button>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col h-full overflow-hidden relative">
+
+  <!-- Mobile Header -->
+  <header class="md:hidden bg-white shadow-sm p-4 flex items-center justify-between z-10">
+    <h1 class="font-bold text-slate-700">การเขียนโปรแกรมด้วย Python</h1>
+    <button onclick="document.getElementById('sidebar').classList.toggle('-translate-x-full')" class="text-slate-500"><i data-lucide="menu"></i></button>
+  </header>
+
+  <!-- Content Pages Container -->
+  <div class="flex-1 overflow-y-auto bg-slate-100 p-4 md:p-8" id="main-content">
+
+    <!-- PAGE: HOME -->
+    <div id="page-home" class="content-page active">
+      <div class="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-2xl p-8 text-white shadow-lg mb-8 relative overflow-hidden">
+        <div class="relative z-10">
+          <h2 class="text-3xl font-bold mb-2">สวัสดีครับ, <span id="home-name">นักเรียน</span>! 👋</h2>
+          <p class="text-indigo-100 mb-6 max-w-2xl">ยินดีต้อนรับสู่คอร์สเรียนพื้นฐาน Python เราจะมาเรียนรู้วิธีสั่งงานคอมพิวเตอร์ให้คิดและทำงานแทนเรากันครับ</p>
+          <a href="module_1.html"
+             class="bg-white text-indigo-600 px-6 py-2 rounded-full font-bold shadow-md hover:bg-indigo-50 transition inline-block">เริ่มเรียนบทที่
+            1</a>
+        </div>
+        <div class="absolute right-0 bottom-0 opacity-10 transform translate-x-10 translate-y-10">
+          <i data-lucide="code-2" class="w-64 h-64"></i>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+        <i data-lucide="map" class="text-indigo-600"></i> ภาพรวมเนื้อหา
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Cards for quick access -->
+        <div onclick="showPage('module-1')" class="bg-white p-5 rounded-xl shadow-sm hover:shadow-md transition cursor-pointer border border-slate-100 group">
+          <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform"><i data-lucide="workflow"></i></div>
+          <h4 class="font-bold text-slate-700">1. อัลกอริทึม</h4>
+          <p class="text-sm text-slate-500">พื้นฐานการคิดแบบคอมพิวเตอร์</p>
+        </div>
+        <div onclick="showPage('module-5')" class="bg-white p-5 rounded-xl shadow-sm hover:shadow-md transition cursor-pointer border border-slate-100 group">
+          <div class="w-10 h-10 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform"><i data-lucide="message-square"></i></div>
+          <h4 class="font-bold text-slate-700">5. รับค่า/แสดงผล</h4>
+          <p class="text-sm text-slate-500">คำสั่ง print และ input</p>
+        </div>
+        <div onclick="showPage('module-7')" class="bg-white p-5 rounded-xl shadow-sm hover:shadow-md transition cursor-pointer border border-slate-100 group">
+          <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform"><i data-lucide="git-branch"></i></div>
+          <h4 class="font-bold text-slate-700">7. การตัดสินใจ</h4>
+          <p class="text-sm text-slate-500">การใช้ if-else เงื่อนไข</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: MODULE 1 (Algorithm) -->
+    <div id="page-module-1" class="content-page">
+      <div class="max-w-3xl mx-auto">
+        <div class="mb-6">
+          <span class="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full">บทที่ 1</span>
+          <h2 class="text-3xl font-bold text-slate-800 mt-2">การออกแบบขั้นตอนการทำงาน</h2>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 mb-6">
+          <h3 class="font-bold text-lg mb-3">ทำความเข้าใจก่อนเริ่มเรียน</h3>
+          <p class="text-slate-600 mb-4">
+            ก่อนจะเขียนโค้ด เราต้องวางแผนก่อน เหมือนจะสร้างบ้านต้องมีพิมพ์เขียว
+            <strong>อัลกอริทึม (Algorithm)</strong> คือลำดับขั้นตอนที่ชัดเจนในการแก้ปัญหา
+          </p>
+          <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+            <p class="text-sm font-semibold text-slate-500 mb-2">ตัวอย่าง Flowchart พื้นฐาน</p>
+            <div class="flex flex-col items-center gap-2">
+              <div class="flow-symbol flow-start">เริ่มต้น</div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-symbol flow-io">รับค่า (Input)</div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-symbol flow-process">ประมวลผล</div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-symbol flow-start">สิ้นสุด</div>
+            </div>
+          </div>
+        </div>
+        <a href="module_1.html" class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+          เข้าสู่บทเรียนที่ 1 (ดูวิดีโอ & ฝึกวาดผังงาน)
+        </a>
+      </div>
+    </div>
+
+    <!-- PAGE: MODULE 2 (Variables) -->
+    <div id="page-module-2" class="content-page">
+      <div class="max-w-3xl mx-auto">
+        <div class="mb-6">
+          <span class="bg-indigo-100 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full">บทที่ 2</span>
+          <h2 class="text-3xl font-bold text-slate-800 mt-2">ตัวแปร และชนิดข้อมูล</h2>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 mb-6">
+          <p class="text-slate-600 mb-4">
+            <strong>ตัวแปร (Variable)</strong> เปรียบเสมือน "กล่อง" ที่เราแปะป้ายชื่อเอาไว้ใส่ข้อมูล
+            ข้อมูลมีหลายประเภท เช่น ตัวเลข (Integer) หรือ ข้อความ (String)
+          </p>
+          <div class="code-block text-sm">
+            <span class="comment"># ตัวอย่างการสร้างตัวแปร</span><br>
+            name = <span class="string">"สมชาย"</span>  <span class="comment"># String (ข้อความ)</span><br>
+            age = <span class="number">14</span>        <span class="comment"># Integer (จำนวนเต็ม)</span><br>
+            grade = <span class="number">3.50</span>     <span class="comment"># Float (ทศนิยม)</span>
+          </div>
+        </div>
+        <a href="module_2.html" class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white text-center font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+          เข้าสู่บทเรียนที่ 2 (ดูวิดีโอ & ทำแบบฝึกหัด)
+        </a>
+      </div>
+    </div>
+
+    <!-- PAGE: MODULE 3 (Operators) -->
+    <div id="page-module-3" class="content-page">
+      <div class="max-w-3xl mx-auto">
+        <div class="mb-6">
+          <span class="bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full">บทที่ 3</span>
+          <h2 class="text-3xl font-bold text-slate-800 mt-2">รหัสควบคุม & ตัวดำเนินการ</h2>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 mb-6">
+          <p class="text-slate-600 mb-4">
+            การคำนวณใน Python ใช้เครื่องหมายทางคณิตศาสตร์ และมีรหัสพิเศษบางตัวที่ควรรู้
+          </p>
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div class="bg-purple-50 p-3 rounded border border-purple-100">
+              <strong>+  -  * /</strong> : บวก ลบ คูณ หารทั่วไป
+            </div>
+            <div class="bg-purple-50 p-3 rounded border border-purple-100">
+              <strong>**</strong> : ยกกำลัง (เช่น 2**3 = 8)
+            </div>
+            <div class="bg-purple-50 p-3 rounded border border-purple-100">
+              <strong>//</strong> : หารปัดเศษทิ้ง (7 // 2 = 3)
+            </div>
+            <div class="bg-purple-50 p-3 rounded border border-purple-100">
+              <strong>%</strong> : หารเอาเศษ (7 % 2 = 1)
+            </div>
+          </div>
+        </div>
+        <a href="module_3.html" class="block w-full bg-purple-600 hover:bg-purple-700 text-white text-center font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+          เข้าสู่บทเรียนที่ 3 (ดูวิดีโอ & ทำแบบทดสอบ)
+        </a>
+      </div>
+    </div>
+
+    <!-- PAGE: MODULE 4 (Mu Editor) -->
+    <div id="page-module-4" class="content-page">
+      <div class="max-w-3xl mx-auto">
+        <div class="mb-6">
+          <span class="bg-pink-100 text-pink-700 text-xs font-bold px-3 py-1 rounded-full">บทที่ 4</span>
+          <h2 class="text-3xl font-bold text-slate-800 mt-2">เริ่มต้นใช้โปรแกรม Mu</h2>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 mb-6 text-center">
+          <i data-lucide="terminal" class="w-16 h-16 text-pink-500 mx-auto mb-4"></i>
+          <p class="text-slate-600">
+            ในบทนี้ เราจะมาติดตั้งเครื่องมือสำหรับเขียนโค้ดที่ชื่อว่า <strong>Mu Editor</strong>
+            ซึ่งออกแบบมาสำหรับผู้เริ่มต้นโดยเฉพาะ
+          </p>
+        </div>
+        <a href="module_4.html" class="block w-full bg-pink-600 hover:bg-pink-700 text-white text-center font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+          เข้าสู่บทเรียนที่ 4 (ติดตั้งโปรแกรม & ส่งงาน)
+        </a>
+      </div>
+    </div>
+
+    <!-- PAGE: MODULE 5 (Input/Output) -->
+    <div id="page-module-5" class="content-page">
+      <div class="max-w-3xl mx-auto">
+        <div class="mb-6">
+          <span class="bg-orange-100 text-orange-700 text-xs font-bold px-3 py-1 rounded-full">บทที่ 5</span>
+          <h2 class="text-3xl font-bold text-slate-800 mt-2">ฟังก์ชัน print และ input</h2>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 mb-6">
+          <h3 class="font-bold text-lg mb-3">หัวใจของการโต้ตอบ</h3>
+          <div class="space-y-3">
+            <div class="flex items-start gap-3">
+              <span class="bg-gray-200 px-2 py-1 rounded font-mono text-sm">print()</span>
+              <span class="text-slate-600">ใช้แสดงผลข้อมูลออกทางหน้าจอ</span>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="bg-gray-200 px-2 py-1 rounded font-mono text-sm">input()</span>
+              <span class="text-slate-600">ใช้รับข้อมูลจากแป้นพิมพ์ (ได้เป็นข้อความเสมอ)</span>
+            </div>
+          </div>
+          <div class="code-block text-sm mt-4">
+            name = <span class="function">input</span>(<span class="string">"คุณชื่ออะไร: "</span>)<br>
+            <span class="function">print</span>(<span class="string">"สวัสดี"</span>, name)
+          </div>
+        </div>
+        <a href="module_5.html" class="block w-full bg-orange-600 hover:bg-orange-700 text-white text-center font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+          เข้าสู่บทเรียนที่ 5 (ฝึกเขียนโค้ดจริง!)
+        </a>
+      </div>
+    </div>
+
+    <!-- PAGE: MODULE 6 (Sequential) -->
+    <div id="page-module-6" class="content-page">
+      <div class="max-w-3xl mx-auto">
+        <div class="mb-6">
+          <span class="bg-teal-100 text-teal-700 text-xs font-bold px-3 py-1 rounded-full">บทที่ 6</span>
+          <h2 class="text-3xl font-bold text-slate-800 mt-2">โครงสร้างแบบเรียงลำดับ</h2>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 mb-6">
+          <p class="text-slate-600">
+            โปรแกรมปกติจะทำงานจาก <strong>บรรทัดบนสุด ลงมา ล่างสุด</strong> ทีละบรรทัด
+            เราต้องเรียงลำดับคำสั่งให้ถูกต้อง เช่น ต้องรับค่าก่อน แล้วค่อยนำมาคำนวณ
+          </p>
+        </div>
+        <a href="module_6.html" class="block w-full bg-teal-600 hover:bg-teal-700 text-white text-center font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+          เข้าสู่บทเรียนที่ 6 (ฝึกเขียนโปรแกรมคำนวณ)
+        </a>
+      </div>
+    </div>
+
+    <!-- PAGE: MODULE 7 (Selection) -->
+    <div id="page-module-7" class="content-page">
+      <div class="max-w-3xl mx-auto">
+        <div class="mb-6">
+          <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full">บทที่ 7</span>
+          <h2 class="text-3xl font-bold text-slate-800 mt-2">โครงสร้างแบบเลือกทำ (if-else)</h2>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 mb-6">
+          <h3 class="font-bold text-lg mb-3">ทำให้โปรแกรม "คิด" เองได้</h3>
+          <p class="text-slate-600 mb-4">เราใช้คำสั่ง <code>if</code> เพื่อตรวจสอบเงื่อนไข ถ้าจริงทำอย่างหนึ่ง ถ้าไม่จริงทำอีกอย่าง</p>
+          <div class="code-block text-sm">
+            score = <span class="number">50</span><br>
+            <span class="keyword">if</span> score >= <span class="number">50</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"สอบผ่าน"</span>)<br>
+            <span class="keyword">else</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"สอบตก"</span>)
+          </div>
+        </div>
+        <a href="module_7.html" class="block w-full bg-emerald-600 hover:bg-emerald-700 text-white text-center font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+          เข้าสู่บทเรียนที่ 7 (เขียนโปรแกรมตัดเกรด)
+        </a>
+      </div>
+    </div>
+
+    <!-- PAGE: PLAYGROUND (Skulpt) -->
+    <div id="page-playground" class="content-page">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+          <i data-lucide="code" class="text-green-600"></i> Python Playground
+        </h2>
+        <p class="text-slate-600 mb-4">พื้นที่สำหรับทดลองเขียนโค้ดเล่นๆ (รันในเบราว์เซอร์)</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-[500px]">
+          <!-- Code Editor -->
+          <div class="flex flex-col">
+            <div class="bg-slate-800 text-slate-400 px-4 py-2 rounded-t-lg text-xs font-mono border-b border-slate-700">
+              main.py
+            </div>
+            <div id="playground-editor" class="flex-1 rounded-b-lg"></div>
+            <button onclick="runPlayground()"
+                    class="mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow flex items-center justify-center gap-2 transition">
+              <i data-lucide="play" class="w-4 h-4"></i> รันโค้ด (Run)
+            </button>
+          </div>
+
+          <!-- Output -->
+          <div class="flex flex-col">
+            <div class="bg-black text-green-500 px-4 py-2 rounded-t-lg text-xs font-mono">Terminal / Output</div>
+            <pre id="playground-output" class="playground-output flex-1 rounded-b-lg overflow-auto"></pre>
+            <div id="playground-input-container" class="mt-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: EXAM -->
+    <div id="page-exam" class="content-page">
+      <div class="max-w-2xl mx-auto text-center py-10">
+        <div class="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
+          <i data-lucide="trophy" class="w-12 h-12 text-yellow-500"></i>
+        </div>
+        <h2 class="text-3xl font-bold text-slate-800 mb-4">แบบทดสอบท้ายบท (Final Exam)</h2>
+        <p class="text-slate-600 mb-8">
+          ทดสอบความรู้ทั้งหมด 20 ข้อ เพื่อวัดผลการเรียนรู้<br>
+          คะแนนเต็ม 20 คะแนน (เกณฑ์ผ่าน 10 คะแนน)
+        </p>
+
+        <div id="exam-status-card" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-8 hidden">
+          <p class="text-slate-500 text-sm">ผลคะแนนของคุณ</p>
+          <div class="text-5xl font-bold text-indigo-600 my-2"><span id="index-score">0</span><span class="text-2xl text-slate-400 font-normal">/20</span></div>
+          <p class="text-green-600 font-semibold">บันทึกคะแนนแล้ว ✅</p>
+        </div>
+
+        <a href="final_exam.html" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-4 px-10 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 text-lg">
+          เริ่มทำแบบทดสอบ
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // --- URL ของ Google Apps Script ---
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwoTjgil0LTrAdLVZNrPRyNFzbBSPmYiVRmIHwN6ZPF0dG7caGAlo3UBCfiORntPKm8/exec";
+
+  lucide.createIcons();
+
+  // State
+  let editor;
+
+  // --- Login & Session Logic ---
+  function checkSession() {
+    const user = localStorage.getItem('python_student');
+    if (user) {
+      const userData = JSON.parse(user);
+      initApp(userData);
+    } else {
+      document.getElementById('registration-screen').classList.remove('hidden');
+    }
+  }
+
+  function initApp(userData) {
+    document.getElementById('registration-screen').classList.add('hidden');
+
+    // Update User Info
+    document.getElementById('sidebar-name').textContent = userData.name;
+    document.getElementById('home-name').textContent = userData.name.split(' ')[0];
+    document.getElementById('user-avatar').textContent = userData.name.substring(0,2).toUpperCase();
+    document.getElementById('sidebar-class').textContent = `${userData.class} เลขที่ ${userData.no}`;
+
+    // Check Exam Score
+    if (userData.finalScore !== undefined) {
+      document.getElementById('exam-status-card').classList.remove('hidden');
+      document.getElementById('index-score').textContent = userData.finalScore;
+    }
+
+    // Init ACE Editor for playground
+    if (!editor) {
+      editor = ace.edit("playground-editor");
+      editor.setTheme("ace/theme/tomorrow_night");
+      editor.session.setMode("ace/mode/python");
+      editor.setFontSize(14);
+    }
+  }
+
+  document.getElementById('login-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    const loader = document.getElementById('btn-loader');
+
+    btn.disabled = true;
+    loader.classList.remove('hidden');
+
+    const userData = {
+      type: 'register',
+      name: document.getElementById('student-name').value,
+      class: document.getElementById('student-class').value,
+      no: document.getElementById('student-no').value,
+      loginTime: new Date().toLocaleString('th-TH')
+    };
+
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(userData),
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' }
+    }).then(() => {
+      localStorage.setItem('python_student', JSON.stringify(userData));
+      setTimeout(() => initApp(userData), 1000);
+    }).catch(err => {
+      console.error(err);
+      localStorage.setItem('python_student', JSON.stringify(userData));
+      initApp(userData);
+    });
+  });
+
+  window.logout = function() {
+    if(confirm('ออกจากระบบ?')) {
+      localStorage.removeItem('python_student');
+      location.reload();
+    }
+  }
+
+  // --- Navigation Logic ---
+  window.showPage = function(pageId) {
+    // Hide all pages
+    document.querySelectorAll('.content-page').forEach(p => p.classList.remove('active'));
+
+    // Sidebar active state
+    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+    const activeLink = document.querySelector(`.sidebar-link[onclick="showPage('${pageId}')"]`);
+    if(activeLink) activeLink.classList.add('active');
+
+    // Show target page
+    const target = document.getElementById('page-' + pageId);
+    if(target) target.classList.add('active');
+
+    // Mobile: Close sidebar
+    if(window.innerWidth < 768) {
+      document.getElementById('sidebar').classList.add('-translate-x-full');
+    }
+  }
+
+  // --- Skulpt Logic (Playground) ---
+  function outf(text) {
+    const output = document.getElementById("playground-output");
+    output.innerHTML = output.innerHTML + text;
+  }
+  function builtinRead(x) {
+    if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+      throw "File not found: '" + x + "'";
+    return Sk.builtinFiles["files"][x];
+  }
+
+  window.runPlayground = function() {
+    const code = editor.getValue();
+    const output = document.getElementById("playground-output");
+    const inputContainer = document.getElementById("playground-input-container");
+
+    output.innerHTML = '';
+    inputContainer.innerHTML = '';
+
+    // Config Skulpt for input
+    Sk.configure({
+      output: outf,
+      read: builtinRead,
+      inputfun: function(promptText) {
+        return new Promise(function(resolve) {
+          // Output the prompt
+          outf(promptText);
+
+          // Create Input Field
+          const input = document.createElement("input");
+          input.type = "text";
+          input.className = "w-full p-2 bg-slate-800 text-white border border-slate-600 rounded mt-2 focus:outline-none focus:border-green-500";
+          input.placeholder = "พิมพ์คำตอบแล้วกด Enter...";
+
+          input.addEventListener("keyup", function(e) {
+            if (e.key === "Enter") {
+              const val = input.value;
+              outf(val + "\n"); // Echo input
+              input.remove(); // Remove input field
+              resolve(val); // Send to Python
+            }
+          });
+
+          inputContainer.appendChild(input);
+          input.focus();
+        });
+      },
+      inputfunTakesPrompt: true
+    });
+
+    Sk.misceval.asyncToPromise(function() {
+      return Sk.importMainWithBody("<stdin>", false, code, true);
+    }).then(function(mod) {
+      console.log('success');
+    }, function(err) {
+      outf("\n" + err.toString());
+    });
+  }
+
+  // Start
+  checkSession();
+
+</script>
+</body>
+</html>

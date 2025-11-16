@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บทเรียนที่ 7: โครงสร้างแบบเลือกทำ (if-else)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- 1. โหลด ACE Code Editor Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.33.0/ace.js"></script>
+
+  <style>
+    body { font-family: 'Noto Sans Thai', sans-serif; }
+    /* กำหนดความสูงของ Code Editor */
+    #editor {
+      width: 100%;
+      height: 350px; /* เพิ่มความสูงหน่อยเพราะโค้ดยาว */
+      border-radius: 0.5rem;
+      border: 1px solid #e2e8f0;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex flex-col h-screen">
+
+<!-- ส่วนหัวของเว็บ -->
+<header class="bg-white shadow-md w-full">
+  <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+    <div>
+      <h2 class="text-xl font-semibold text-gray-700">หน่วยที่ 2: Python</h2>
+      <h1 class="text-2xl font-bold text-blue-800">โมดูลที่ 7: โครงสร้างแบบเลือกทำ (if-else)</h1>
+    </div>
+    <a href="index.html" class="text-blue-600 hover:underline">กลับหน้าหลัก</a>
+  </div>
+</header>
+
+<!-- เนื้อหาหลัก (2 คอลัมน์) -->
+<main class="flex-1 container mx-auto px-6 py-6 flex flex-col md:flex-row gap-6 overflow-y-auto">
+
+  <!-- คอลัมน์ซ้าย: วิดีโอและสถานะ -->
+  <div class="w-full md:w-1/2 bg-white rounded-xl shadow-lg p-6">
+    <h3 class="text-xl font-bold text-gray-800 mb-4">🎬 1. ดูวิดีโอ</h3>
+
+    <!-- พื้นที่สำหรับ YouTube Player -->
+    <div class="aspect-video bg-gray-800 rounded-lg mb-4">
+      <div id="player"></div>
+    </div>
+
+    <!-- ระบบติดตามความคืบหน้า -->
+    <div>
+      <h4 class="font-semibold text-gray-700">ความคืบหน้า:</h4>
+      <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2 mb-1">
+        <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+      </div>
+      <div id="video-status" class="text-sm text-gray-500">สถานะ: ยังไม่เริ่มเรียน</div>
+    </div>
+  </div>
+
+  <!-- คอลัมน์ขวา: แบบฝึกหัด (Code Editor) -->
+  <div class="w-full md:w-1/2 bg-white rounded-xl shadow-lg p-6 flex flex-col">
+
+    <!-- 1. กล่องสนทนาคุณครู -->
+    <div class="flex items-start gap-4 mb-4">
+      <!-- รูปคุณครู -->
+      <img src="https://i.ibb.co/vvmFnzs5/2.png" alt="คุณครู" class="rounded-full w-24 h-24 border-4 border-white shadow-md flex-shrink-0 bg-white object-cover">
+
+      <!-- กล่องคำพูด -->
+      <div class="relative bg-blue-50 border border-blue-200 p-4 rounded-xl shadow-sm mt-4 w-full">
+        <div class="absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-0 h-0 border-t-[10px] border-t-transparent border-r-[12px] border-r-blue-50 border-b-[10px] border-b-transparent" style="filter: drop-shadow(-1px 0px 1px rgba(0,0,0,0.05));"></div>
+
+        <h3 class="text-xl font-bold text-gray-800 mb-2">🏆 2. บอสไฟต์: โปรแกรมตัดเกรด!</h3>
+        <p class="text-gray-700 text-sm leading-relaxed">
+          โจทย์ข้อสุดท้ายครับ! ให้เขียนโปรแกรมตรวจสอบคะแนนสอบ (score):<br>
+          1. รับค่าคะแนน และแปลงเป็นตัวเลข (int)<br>
+          2. ใช้ <code>if</code> เช็กว่า: ถ้าคะแนน >= 80 ให้พิมพ์ "Grade A"<br>
+          3. ใช้ <code>elif</code> เช็กว่า: ถ้าคะแนน >= 50 ให้พิมพ์ "Pass"<br>
+          4. ใช้ <code>else</code> สำหรับกรณีอื่นๆ ให้พิมพ์ "Fail"<br>
+          <span class="text-red-500 font-semibold text-xs">*อย่าลืมเครื่องหมาย : หลังเงื่อนไขนะ!</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- 2. Code Editor -->
+    <div class="flex-1 flex flex-col">
+      <div id="editor"># รับค่าคะแนน
+        score = int(input("ป้อนคะแนน: "))
+
+        # เริ่มเขียนเงื่อนไขตรวจสอบคะแนน
+        if score >= 80:
+        print("Grade A")
+        # ... เขียนต่อให้จบนะครับ ...</div>
+    </div>
+
+    <!-- 3. ส่วนแสดงผลลัพธ์ (Teacher Feedback) -->
+    <div id="teacher-feedback" class="mt-4 flex items-start gap-4 hidden">
+      <!-- รูปคุณครู (ซ้ำ) -->
+      <img src="https://i.ibb.co/vvmFnzs5/2.png" alt="คุณครู" class="rounded-full w-24 h-24 border-4 border-white shadow-md flex-shrink-0 bg-white object-cover">
+
+      <div id="teacher-bubble-response" class="relative bg-green-100 border border-green-300 p-4 rounded-xl shadow-sm mt-4 w-full">
+        <div class="teacher-bubble-tail absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-0 h-0 border-t-[10px] border-t-transparent border-r-[12px] border-r-green-100 border-b-[10px] border-b-transparent" style="filter: drop-shadow(-1px 0px 1px rgba(0,0,0,0.05));"></div>
+        <p id="teacher-message" class="text-gray-700"></p>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<!-- แถบส่งงาน (Footer) -->
+<footer class="bg-white shadow-inner w-full p-4 mt-auto">
+  <div class="container mx-auto px-6 flex justify-between items-center">
+    <div id="submit-status" class="text-gray-500">
+      กรุณาดูวิดีโอให้จบก่อน
+    </div>
+    <div>
+      <button id="submit-btn" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
+        ตรวจคำตอบ
+      </button>
+      <a href="final_exam.html" id="next-btn" class="bg-yellow-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-yellow-600 transition-colors ml-4 hidden flex items-center inline-flex">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        จบหน่วยการเรียนรู้
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // 1. โหลด YouTube IFrame API
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  var player;
+  var progressInterval;
+  const submitBtn = document.getElementById('submit-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const videoStatus = document.getElementById('video-status');
+  const submitStatus = document.getElementById('submit-status');
+  const progressBar = document.getElementById('progress-bar');
+
+  // Teacher Feedback Elements
+  const teacherFeedback = document.getElementById('teacher-feedback');
+  const teacherMessage = document.getElementById('teacher-message');
+  const teacherBubble = document.getElementById('teacher-bubble-response');
+
+  let videoWatched = false;
+
+  // 2. YouTube API Setup
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '100%',
+      width: '100%',
+      // Placeholder ID สำหรับโมดูลสุดท้าย
+      videoId: '4Lj82Gi7ir4',
+      playerVars: { 'playsinline': 1, 'modestbranding': 1, 'rel': 0 },
+      events: { 'onStateChange': onPlayerStateChange }
+    });
+  }
+
+  function onPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.PLAYING) {
+      videoStatus.textContent = "สถานะ: กำลังเรียน...";
+      progressInterval = setInterval(updateProgress, 1000);
+    } else {
+      clearInterval(progressInterval);
+    }
+    if (event.data == YT.PlayerState.ENDED) {
+      videoStatus.textContent = "สถานะ: ✅ เรียนจบแล้ว!";
+      videoStatus.classList.add('text-green-600', 'font-semibold');
+      progressBar.style.width = '100%';
+      videoWatched = true;
+      checkEnableSubmit();
+    }
+  }
+
+  function updateProgress() {
+    if (player && player.getPlayerState() == YT.PlayerState.PLAYING) {
+      var percentage = (player.getCurrentTime() / player.getDuration()) * 100;
+      progressBar.style.width = percentage + '%';
+    }
+  }
+
+  // 3. Setup Ace Editor
+  var editor = ace.edit("editor");
+  editor.setTheme("ace/theme/monokai");
+  editor.session.setMode("ace/mode/python");
+  editor.setFontSize(16);
+  editor.setOptions({
+    enableBasicAutocompletion: true,
+    enableSnippets: true,
+    enableLiveAutocompletion: true
+  });
+
+  // 4. Check Logic
+  function checkEnableSubmit() {
+    if (videoWatched) {
+      submitBtn.disabled = false;
+      submitStatus.textContent = "✅ พร้อมตรวจโค้ดแล้ว!";
+      submitStatus.classList.add('text-green-600');
+    } else {
+      submitStatus.textContent = "กรุณาดูวิดีโอให้จบก่อน";
+      submitStatus.classList.remove('text-green-600');
+    }
+  }
+
+  // 5. Submit Logic (Auto-Grader)
+  submitBtn.addEventListener('click', function() {
+    var userCode = editor.getValue();
+    teacherFeedback.classList.remove('hidden');
+
+    // ตรวจคำตอบ (Check Logic)
+    let hasIf = userCode.includes("if");
+    let hasElif = userCode.includes("elif");
+    let hasElse = userCode.includes("else");
+    let hasPrint = userCode.includes("print");
+    let hasColon = userCode.includes(":"); // สำคัญมากสำหรับ Python
+
+    if (hasIf && hasElif && hasElse && hasPrint && hasColon) {
+      // ผ่าน
+      teacherMessage.innerHTML = "🎉 <strong>ยินดีด้วยครับ! คุณทำสำเร็จ!</strong><br>คุณสามารถใช้โครงสร้าง <code>if-elif-else</code> ได้ครบถ้วน คุณจบหน่วยการเรียนรู้นี้แล้ว เก่งมากๆ ครับ!";
+      teacherBubble.className = "relative bg-green-100 border border-green-300 p-4 rounded-xl shadow-sm mt-4 w-full";
+
+      // Update หางกล่องคำพูดเป็นสีเขียว
+      document.querySelector('.teacher-bubble-tail').className = "teacher-bubble-tail absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-0 h-0 border-t-[10px] border-t-transparent border-r-[12px] border-r-green-100 border-b-[10px] border-b-transparent";
+
+      submitStatus.textContent = "🎉 ยินดีด้วย! คุณจบหน่วยการเรียนรู้นี้แล้ว";
+      submitBtn.disabled = true;
+      submitBtn.textContent = "ผ่านแล้ว";
+      nextBtn.classList.remove('hidden');
+      window.onwaiting(200)
+    } else {
+      // ไม่ผ่าน - แจ้งเตือนเฉพาะจุด
+      let advice = "";
+      if (!hasColon) {
+        advice = "ระวัง! อย่าลืมใส่เครื่องหมาย <code>:</code> (colon) หลังเงื่อนไข if, elif, else นะครับ";
+      } else if (!hasIf) {
+        advice = "โปรแกรมต้องเริ่มตัดสินใจด้วย <code>if</code> ก่อนเสมอนะครับ";
+      } else if (!hasElif) {
+        advice = "โจทย์ข้อนี้มี 3 ทางเลือก อย่าลืมใช้ <code>elif</code> สำหรับทางเลือกตรงกลางนะครับ";
+      } else if (!hasElse) {
+        advice = "อย่าลืมใช้ <code>else</code> ปิดท้าย สำหรับกรณีที่ไม่ตรงกับเงื่อนไขใดๆ เลยนะครับ";
+      } else {
+        advice = "ลองเช็กการย่อหน้า (Indentation) ดูนะครับ ว่าคำสั่ง print อยู่ข้างใน if/else จริงไหม?";
+      }
+
+      teacherMessage.innerHTML = `<strong>เกือบถูกแล้วครับ!</strong><br>${advice}<br>ลองแก้โค้ดแล้วกดตรวจใหม่นะครับ`;
+      teacherBubble.className = "relative bg-red-100 border border-red-300 p-4 rounded-xl shadow-sm mt-4 w-full";
+
+      // Update หางกล่องคำพูดเป็นสีแดง
+      document.querySelector('.teacher-bubble-tail').className = "teacher-bubble-tail absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-0 h-0 border-t-[10px] border-t-transparent border-r-[12px] border-r-red-100 border-b-[10px] border-b-transparent";
+
+      submitStatus.textContent = "ลองแก้ไขโค้ดดูใหม่นะครับ";
+    }
+  });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บทเรียนที่ 3: รหัสควบคุม และ ตัวดำเนินการ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans Thai', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-100 flex flex-col h-screen">
+
+<!-- ส่วนหัวของเว็บ -->
+<header class="bg-white shadow-md w-full">
+  <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+    <div>
+      <h2 class="text-xl font-semibold text-gray-700">หน่วยที่ 2: Python</h2>
+      <h1 class="text-2xl font-bold text-blue-800">โมดูลที่ 3: รหัสควบคุม และ ตัวดำเนินการ</h1>
+    </div>
+    <a href="index.html" class="text-blue-600 hover:underline">กลับหน้าหลัก</a>
+  </div>
+</header>
+
+<!-- เนื้อหาหลัก (2 คอลัมน์) -->
+<main class="flex-1 container mx-auto px-6 py-6 flex flex-col md:flex-row gap-6 overflow-y-auto">
+
+  <!-- คอลัมน์ซ้าย: วิดีโอและสถานะ -->
+  <div class="w-full md:w-1/2 bg-white rounded-xl shadow-lg p-6">
+    <h3 class="text-xl font-bold text-gray-800 mb-4">🎬 1. ดูวิดีโอ</h3>
+
+    <!-- พื้นที่สำหรับ YouTube Player -->
+    <div class="aspect-video bg-gray-800 rounded-lg mb-4">
+      <div id="player"></div>
+    </div>
+
+    <!-- ระบบติดตามความคืบหน้า -->
+    <div>
+      <h4 class="font-semibold text-gray-700">ความคืบหน้า:</h4>
+      <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2 mb-1">
+        <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+      </div>
+      <div id="video-status" class="text-sm text-gray-500">สถานะ: ยังไม่เริ่มเรียน</div>
+    </div>
+  </div>
+
+  <!-- คอลัมน์ขวา: แบบฝึกหัด (Quiz แบบกรอกคำตอบ) -->
+  <div class="w-full md:w-1/2 bg-white rounded-xl shadow-lg p-6 flex flex-col">
+
+    <!-- 1. กล่องสนทนาคุณครู (ส่วนโจทย์) -->
+    <div class="flex items-start gap-4 mb-6">
+      <!-- รูปคุณครู (Placeholder) -->
+      <img src="https://i.ibb.co/vvmFnzs5/2.png" alt="คุณครู" class="rounded-full w-24 h-24 border-4 border-white shadow-md flex-shrink-0">
+
+      <!-- กล่องคำพูด -->
+      <div class="relative bg-blue-50 border border-blue-200 p-4 rounded-xl shadow-sm mt-4">
+        <!-- หางของกล่องคำพูด -->
+        <div class="absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-0 h-0
+                                border-t-[10px] border-t-transparent
+                                border-r-[12px] border-r-blue-50
+                                border-b-[10px] border-b-transparent"
+             style="filter: drop-shadow(-1px 0px 1px rgba(0,0,0,0.05));">
+        </div>
+
+        <h3 class="text-xl font-bold text-gray-800 mb-2">✍️ 2. แบบทดสอบความเข้าใจ</h3>
+        <p class="text-gray-700">
+          <strong>โจทย์:</strong> โมดูลนี้เน้นความจำเรื่องสัญลักษณ์นะครับ... ลองตอบคำถาม 4 ข้อนี้ดูครับ
+        </p>
+      </div>
+    </div>
+
+    <!-- 2. ส่วนของคำถาม -->
+    <div class="space-y-4">
+      <div>
+        <label for="q1" class="block text-sm font-medium text-gray-700">1. ใน Python, <code class="bg-gray-200 p-1 rounded">7 // 2</code> (7 สแลช-สแลช 2) ได้ผลลัพธ์เท่าไหร่?</label>
+        <input type="text" id="q1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="ตอบเป็นตัวเลข...">
+        <div id="q1-feedback" class="text-sm mt-1"></div>
+      </div>
+      <div>
+        <label for="q2" class="block text-sm font-medium text-gray-700">2. ใน Python, <code class="bg-gray-200 p-1 rounded">7 % 2</code> (7 เปอร์เซ็นต์ 2) ได้ผลลัพธ์เท่าไหร่?</label>
+        <input type="text" id="q2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="ตอบเป็นตัวเลข...">
+        <div id="q2-feedback" class="text-sm mt-1"></div>
+      </div>
+      <div>
+        <label for="q3" class="block text-sm font-medium text-gray-700">3. รหัสควบคุม (Control Code) <code class="bg-gray-200 p-1 rounded">\n</code> (แบ็กสแลช-เอ็น) ใช้สำหรับทำอะไร?</label>
+        <input type="text" id="q3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="ตอบเป็นภาษาไทย...">
+        <div id="q3-feedback" class="text-sm mt-1"></div>
+      </div>
+      <div>
+        <label for="q4" class="block text-sm font-medium text-gray-700">4. รหัสรูปแบบข้อมูล (Format Code) <code class="bg-gray-200 p-1 rounded">%d</code> (เปอร์เซ็นต์-ดี) ใช้สำหรับข้อมูลชนิดใด?</label>
+        <input type="text" id="q4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="เช่น int, float, string...">
+        <div id="q4-feedback" class="text-sm mt-1"></div>
+      </div>
+    </div>
+
+    <!-- 3. ผลลัพธ์รวม (กล่องคำพูดตอบกลับจากครู) -->
+    <div id="teacher-feedback" class="mt-6 flex items-start gap-4 hidden">
+      <!-- รูปคุณครู (ซ้ำเพื่อความชัดเจน) -->
+      <img src="https://i.ibb.co/vvmFnzs5/2.png" alt="คุณครู" class="rounded-full w-24 h-24 border-4 border-white shadow-md flex-shrink-0">
+
+      <!-- กล่องคำพูดตอบกลับ -->
+      <div id="teacher-bubble" class="relative bg-gray-100 p-4 rounded-xl shadow-sm mt-4">
+        <!-- หางของกล่องคำพูด -->
+        <div id="teacher-bubble-tail" class="teacher-bubble-tail absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-0 h-0
+                                border-t-[10px] border-t-transparent
+                                border-r-[12px] border-r-gray-100
+                                border-b-[10px] border-b-transparent"
+             style="filter: drop-shadow(-1px 0px 1px rgba(0,0,0,0.05));">
+        </div>
+        <p id="teacher-message" class="text-gray-700"></p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- แถบส่งงาน (Footer) -->
+<footer class="bg-white shadow-inner w-full p-4 mt-auto">
+  <div class="container mx-auto px-6 flex justify-between items-center">
+    <div id="submit-status" class="text-gray-500">
+      กรุณาดูวิดีโอให้จบก่อน
+    </div>
+    <div>
+      <button id="submit-btn" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
+        ตรวจคำตอบ
+      </button>
+      <button id="next-btn" class="bg-gray-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-600 transition-colors ml-4 hidden">
+        ไปบทเรียนถัดไป
+      </button>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // 1. โหลด YouTube IFrame API
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  var player;
+  var progressInterval;
+  const submitBtn = document.getElementById('submit-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const videoStatus = document.getElementById('video-status');
+  const submitStatus = document.getElementById('submit-status');
+  const progressBar = document.getElementById('progress-bar');
+
+  // --- ตัวแปรสำหรับ Quiz ---
+  const q1 = document.getElementById('q1');
+  const q2 = document.getElementById('q2');
+  const q3 = document.getElementById('q3');
+  const q4 = document.getElementById('q4');
+  const q1Feedback = document.getElementById('q1-feedback');
+  const q2Feedback = document.getElementById('q2-feedback');
+  const q3Feedback = document.getElementById('q3-feedback');
+  const q4Feedback = document.getElementById('q4-feedback');
+
+  // --- ตัวแปรใหม่สำหรับ Teacher Feedback ---
+  const teacherFeedback = document.getElementById('teacher-feedback');
+  const teacherMessage = document.getElementById('teacher-message');
+  const teacherBubble = document.getElementById('teacher-bubble');
+  const teacherBubbleTail = document.getElementById('teacher-bubble-tail');
+
+  let videoWatched = false;
+
+  // 2. ฟังก์ชันนี้จะทำงานเมื่อ API พร้อม
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '100%',
+      width: '100%',
+      videoId: '-OAXC-YygoM', // <-- *** ใส่ Video ID โมดูล 3 ที่นี่ ***
+      playerVars: {
+        'playsinline': 1, 'modestbranding': 1, 'rel': 0
+      },
+      events: {
+        'onStateChange': onPlayerStateChange
+      }
+    });
+  }
+
+  // 3. ฟังก์ชันนี้ทำงานเมื่อสถานะวิดีโอเปลี่ยน
+  function onPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.PLAYING) {
+      videoStatus.textContent = "สถานะ: กำลังเรียน...";
+      progressInterval = setInterval(updateProgress, 1000);
+    } else {
+      clearInterval(progressInterval);
+    }
+
+    if (event.data == YT.PlayerState.ENDED) {
+      videoStatus.textContent = "สถานะ: ✅ เรียนจบแล้ว!";
+      videoStatus.classList.add('text-green-600', 'font-semibold');
+      progressBar.style.width = '100%';
+
+      videoWatched = true;
+      checkEnableSubmit();
+    }
+  }
+
+  // 4. ฟังก์ชันอัปเดตแถบความคืบหน้า
+  function updateProgress() {
+    if (player && player.getPlayerState() == YT.PlayerState.PLAYING) {
+      var currentTime = player.getCurrentTime();
+      var duration = player.getDuration();
+      var percentage = (currentTime / duration) * 100;
+      progressBar.style.width = percentage + '%';
+    }
+  }
+
+  // --- 5. ฟังก์ชันใหม่: ตรวจสอบเงื่อนไขเพื่อเปิดปุ่ม ---
+  function checkEnableSubmit() {
+    if (videoWatched) {
+      submitBtn.disabled = false;
+      submitStatus.textContent = "✅ ดูวิดีโอจบแล้ว! พร้อมตรวจคำตอบ";
+      submitStatus.classList.add('text-green-600');
+    } else {
+      submitStatus.textContent = "กรุณาดูวิดีโอให้จบก่อน";
+      submitStatus.classList.remove('text-green-600');
+    }
+  }
+
+  // --- 6. Logic การส่งงาน (ปรับปรุงใหม่) ---
+  submitBtn.addEventListener('click', function() {
+    let score = 0;
+
+    // --- ระบบตรวจคำตอบอัตโนมัติ (Auto-Grader) ---
+
+    // ตรวจข้อ 1 (7 // 2)
+    let ans1 = q1.value.trim();
+    if (ans1 === "3") {
+      score++;
+      q1Feedback.textContent = "✅ ถูกต้องครับ! (การหารแบบปัดเศษทิ้ง)";
+      q1Feedback.className = "text-sm mt-1 text-green-600";
+    } else {
+      q1Feedback.textContent = "❌ ยังไม่ถูกครับ (คำใบ้: 7 หาร 2 ได้ 3.5... ถ้า 'ปัดเศษทิ้ง' จะเหลือเท่าไหร่?)";
+      q1Feedback.className = "text-sm mt-1 text-red-600";
+    }
+
+    // ตรวจข้อ 2 (7 % 2)
+    let ans2 = q2.value.trim();
+    if (ans2 === "1") {
+      score++;
+      q2Feedback.textContent = "✅ ถูกต้องครับ! (การหารเอา 'เศษ')";
+      q2Feedback.className = "text-sm mt-1 text-green-600";
+    } else {
+      q2Feedback.textContent = "❌ ยังไม่ถูกครับ (คำใบ้: 7 หาร 2 ได้ 3 'เศษ' เท่าไหร่?)";
+      q2Feedback.className = "text-sm mt-1 text-red-600";
+    }
+
+    // ตรวจข้อ 3 (\n)
+    let ans3 = q3.value.toLowerCase().trim();
+    if (ans3.includes("บรรทัดใหม่") || ans3.includes("new line")) {
+      score++;
+      q3Feedback.textContent = "✅ ถูกต้องครับ! (ขึ้นบรรทัดใหม่ หรือ New Line)";
+      q3Feedback.className = "text-sm mt-1 text-green-600";
+    } else {
+      q3Feedback.textContent = "❌ ยังไม่ถูกครับ (คำใบ้: ตัว 'n' ย่อมาจากอะไร?)";
+      q3Feedback.className = "text-sm mt-1 text-red-600";
+    }
+
+    // ตรวจข้อ 4 (%d)
+    let ans4 = q4.value.toLowerCase().trim();
+    if (ans4.includes("int") || ans4.includes("จำนวนเต็ม")) {
+      score++;
+      q4Feedback.textContent = "✅ ถูกต้องครับ! (int หรือ จำนวนเต็ม)";
+      q4Feedback.className = "text-sm mt-1 text-green-600";
+    } else {
+      q4Feedback.textContent = "❌ ยังไม่ถูกครับ (คำใบ้: %f ใช้กับ float, %s ใช้กับ string... แล้ว %d ล่ะ?)";
+      q4Feedback.className = "text-sm mt-1 text-red-600";
+    }
+
+    // แสดงสรุปผล (แบบใหม่)
+    teacherFeedback.classList.remove('hidden');
+
+    if (score === 4) {
+      // --- กรณีตอบถูกหมด ---
+      teacherMessage.innerHTML = "🎉 <strong>สุดยอดไปเลย!</strong><br>คุณจำสัญลักษณ์สำคัญๆ ได้หมดเลย (ได้ 4/4) เก่งมากครับ ไปบทต่อไปกัน!";
+      teacherBubble.className = "relative bg-green-100 border border-green-300 p-4 rounded-xl shadow-sm mt-4";
+      teacherBubbleTail.className = "teacher-bubble-tail absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-0 h-0 border-t-[10px] border-t-transparent border-r-[12px] border-r-green-100 border-b-[10px] border-b-transparent";
+
+      submitStatus.textContent = "🎉 ผ่านแล้ว! ไปบทเรียนต่อไปได้";
+      submitBtn.disabled = true;
+      submitBtn.textContent = "ผ่านแล้ว";
+      nextBtn.classList.remove('hidden');
+    } else {
+      // --- กรณีตอบผิด ---
+      teacherMessage.innerHTML = `<strong>เกือบแล้วครับ!</strong><br>คุณทำได้ ${score} เต็ม 4 ข้อ ลองแก้ไขข้อที่ผิด (ที่มี ❌) แล้วกดตรวจคำตอบอีกครั้งนะครับ`;
+      teacherBubble.className = "relative bg-red-100 border border-red-300 p-4 rounded-xl shadow-sm mt-4";
+      teacherBubbleTail.className = "teacher-bubble-tail absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-0 h-0 border-t-[10px] border-t-transparent border-r-[12px] border-r-red-100 border-b-[10px] border-b-transparent";
+
+      submitStatus.textContent = "ลองตรวจคำตอบอีกครั้ง";
+    }
+  });
+
+  nextBtn.addEventListener('click', function() {
+    // ในระบบจริง: ให้ลิงก์ไปหน้า module_4.html
+    alert("กำลังไปบทเรียนถัดไป...");
+    window.location.href = 'module_4.html';
+  });
+
+</script>
+</body>
+</html>
