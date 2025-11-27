@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บทเรียนที่ 6: โครงสร้างแบบเรียงลำดับ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.33.0/ace.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans Thai', sans-serif; }
+    #editor { width: 100%; height: 300px; border-radius: 0.5rem; border: 1px solid #e2e8f0; }
+    .teacher-img { transition: transform 0.3s ease; }
+    .teacher-img:hover { transform: scale(1.1) rotate(-2deg); }
+  </style>
+</head>
+<body class="bg-gray-100 flex flex-col h-screen">
+
+<header class="bg-white shadow-md w-full">
+  <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+    <div>
+      <h2 class="text-xl font-semibold text-gray-700">หน่วยที่ 2: Python</h2>
+      <h1 class="text-2xl font-bold text-blue-800">โมดูลที่ 6: โครงสร้างแบบเรียงลำดับ</h1>
+    </div>
+    <a href="index.html" class="text-blue-600 hover:underline transition-colors">กลับหน้าหลัก</a>
+  </div>
+</header>
+
+<main class="flex-1 container mx-auto px-6 py-6 flex flex-col md:flex-row gap-6 overflow-y-auto">
+
+  <div class="w-full md:w-1/2 bg-white rounded-xl shadow-lg p-6">
+    <h3 class="text-xl font-bold text-gray-800 mb-4">🎬 1. ดูวิดีโอ</h3>
+    <div class="aspect-video bg-gray-800 rounded-lg mb-4 overflow-hidden shadow-sm">
+      <div id="player"></div>
+    </div>
+    <div>
+      <h4 class="font-semibold text-gray-700">ความคืบหน้า:</h4>
+      <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2 mb-1 overflow-hidden">
+        <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+      </div>
+      <div id="video-status" class="text-sm text-gray-500 transition-colors duration-300">สถานะ: ยังไม่เริ่มเรียน</div>
+    </div>
+  </div>
+
+  <div class="w-full md:w-1/2 bg-white rounded-xl shadow-lg p-6 flex flex-col">
+    <div class="flex items-start gap-4 mb-4">
+      <img src="https://i.ibb.co/vvmFnzs5/2.png" alt="ครู" class="teacher-img rounded-full w-24 h-24 border-4 border-white shadow-md flex-shrink-0 cursor-pointer">
+      <div class="relative bg-blue-50 border border-blue-200 p-4 rounded-xl shadow-sm mt-4 w-full hover:shadow-md transition-shadow">
+        <div class="absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-0 h-0 border-t-[10px] border-t-transparent border-r-[12px] border-r-blue-50 border-b-[10px] border-b-transparent"></div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">✍️ 2. โจทย์: คำนวณพื้นที่สี่เหลี่ยม</h3>
+        <p class="text-gray-700 text-sm">
+          โปรแกรมทำงานตามลำดับ:<br>
+          1. รับค่า <code>width</code> และ <code>height</code><br>
+          2. <strong>สำคัญ:</strong> แปลงเป็นตัวเลขด้วย <code>int()</code><br>
+          3. คำนวณพื้นที่ (กว้าง * สูง)<br>
+          4. แสดงผลลัพธ์
+        </p>
+      </div>
+    </div>
+
+    <div class="flex-1 flex flex-col">
+      <div id="editor"># รับค่าความกว้าง
+        width = input("ป้อนความกว้าง: ")
+        # รับค่าความสูง
+        height = input("ป้อนความสูง: ")
+
+        # ... แปลงเป็นตัวเลข และคำนวณพื้นที่ตรงนี้ ...
+
+        # ... แสดงผลลัพธ์ ...</div>
+    </div>
+
+    <div id="teacher-feedback" class="mt-4 flex items-start gap-4 hidden transition-all duration-500 ease-out transform translate-y-4 opacity-0">
+      <img src="https://i.ibb.co/vvmFnzs5/2.png" alt="ครู" class="teacher-img rounded-full w-24 h-24 border-4 border-white shadow-md">
+      <div id="feedback-box" class="relative bg-green-100 border border-green-300 p-4 rounded-xl shadow-sm mt-4 w-full">
+        <div id="feedback-tail" class="absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-0 h-0 border-t-[10px] border-t-transparent border-r-[12px] border-r-green-100 border-b-[10px] border-b-transparent"></div>
+        <p id="teacher-message" class="text-gray-700"></p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="bg-white shadow-inner w-full p-4 mt-auto">
+  <div class="container mx-auto px-6 flex justify-between items-center">
+    <div id="submit-status" class="text-gray-500 font-medium transition-colors duration-300">
+      กรุณาดูวิดีโอให้จบก่อน
+    </div>
+    <div>
+      <button id="submit-btn" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 transition-all disabled:bg-gray-300 disabled:cursor-not-allowed hover:shadow-lg active:scale-95 disabled:hover:scale-100 disabled:hover:shadow-none" disabled>
+        ตรวจคำตอบ
+      </button>
+      <button id="next-btn" class="bg-gray-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-600 transition-all ml-4 hidden hover:shadow-lg hover:-translate-y-0.5">
+        ไปบทเรียนถัดไป →
+      </button>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // --- 1. YouTube Setup ---
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  var player, progressInterval;
+  const submitBtn = document.getElementById('submit-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const videoStatus = document.getElementById('video-status');
+  const progressBar = document.getElementById('progress-bar');
+  let videoWatched = false;
+
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '100%',
+      width: '100%',
+      videoId: 'mVHYVekD_00', // Video ID Module 6
+      playerVars: { 'playsinline': 1, 'modestbranding': 1, 'rel': 0 },
+      events: { 'onStateChange': onPlayerStateChange }
+    });
+  }
+
+  function onPlayerStateChange(e) {
+    if (e.data == YT.PlayerState.PLAYING) {
+      videoStatus.innerHTML = "สถานะ: ▶️ กำลังเรียน...";
+      progressInterval = setInterval(() => {
+        if(player) progressBar.style.width = ((player.getCurrentTime() / player.getDuration()) * 100) + '%';
+      }, 1000);
+    } else {
+      clearInterval(progressInterval);
+    }
+    if (e.data == YT.PlayerState.ENDED) {
+      videoStatus.innerHTML = "สถานะ: ✅ เรียนจบแล้ว!";
+      videoStatus.className = "text-green-600 font-bold";
+      progressBar.style.width = '100%';
+      videoWatched = true;
+      checkEnableSubmit();
+    }
+  }
+
+  var editor = ace.edit("editor");
+  editor.setTheme("ace/theme/monokai");
+  editor.session.setMode("ace/mode/python");
+  editor.setFontSize(16);
+
+  function checkEnableSubmit() {
+    if (videoWatched) {
+      submitBtn.disabled = false;
+      document.getElementById('submit-status').innerHTML = "✅ พร้อมตรวจโค้ดแล้ว!";
+      document.getElementById('submit-status').className = "text-green-600 font-bold";
+      submitBtn.classList.add('animate-bounce');
+      setTimeout(() => submitBtn.classList.remove('animate-bounce'), 1000);
+    }
+  }
+
+  function fireConfetti() {
+    var count = 200; var defaults = { origin: { y: 0.7 }, zIndex: 9999 };
+    function fire(particleRatio, opts) { confetti(Object.assign({}, defaults, opts, { particleCount: Math.floor(count * particleRatio) })); }
+    fire(0.25, { spread: 26, startVelocity: 55 }); fire(0.2, { spread: 60 }); fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+  }
+
+  submitBtn.addEventListener('click', function() {
+    var userCode = editor.getValue();
+
+    // ตรวจสอบ Logic
+    let hasInput = userCode.includes("input(");
+    let hasConvert = userCode.includes("int(") || userCode.includes("float(");
+    let hasCalc = userCode.includes("*");
+    let hasPrint = userCode.includes("print(");
+
+    const feedbackArea = document.getElementById('teacher-feedback');
+    const msg = document.getElementById('teacher-message');
+    const box = document.getElementById('feedback-box');
+    const tail = document.getElementById('feedback-tail');
+
+    feedbackArea.classList.remove('hidden', 'translate-y-4', 'opacity-0');
+
+    if (hasInput && hasConvert && hasCalc && hasPrint) {
+      fireConfetti();
+      msg.innerHTML = "🎉 <strong>ถูกต้องครับ!</strong><br>เยี่ยมมาก! คุณทำได้ครบตามขั้นตอนแบบเรียงลำดับ (Sequential) เป๊ะเลยครับ";
+      box.className = "relative bg-green-100 border border-green-300 p-4 rounded-xl shadow-sm mt-4 w-full";
+      tail.className = "absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-0 h-0 border-t-[10px] border-t-transparent border-r-[12px] border-r-green-100 border-b-[10px] border-b-transparent";
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "ผ่านแล้ว";
+      submitBtn.className = "bg-green-600 text-white font-bold py-2 px-6 rounded-lg cursor-not-allowed";
+
+      nextBtn.classList.remove('hidden');
+      nextBtn.classList.add('animate-bounce');
+      setTimeout(() => nextBtn.classList.remove('animate-bounce'), 2000);
+    } else {
+      let advice = "";
+      if (!hasConvert) advice = "อย่าลืม <strong>แปลงข้อมูล</strong> เป็นตัวเลขก่อนคำนวณนะครับ (ใช้ int)";
+      else if (!hasCalc) advice = "อย่าลืมเขียนสูตรคำนวณ <code>กว้าง * ยาว</code> นะครับ";
+      else if (!hasPrint) advice = "คำนวณเสร็จแล้ว อย่าลืม <code>print()</code> ผลลัพธ์ด้วยนะ";
+      else advice = "ลองเช็คโค้ดอีกทีนะครับ ขาดขั้นตอนไหนไปรึเปล่า?";
+
+      msg.innerHTML = `<strong>เกือบได้แล้วครับ!</strong><br>${advice}<br>ลองแก้โค้ดแล้วกดตรวจใหม่นะครับ`;
+      box.className = "relative bg-red-100 border border-red-300 p-4 rounded-xl shadow-sm mt-4 w-full";
+      tail.className = "absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-0 h-0 border-t-[10px] border-t-transparent border-r-[12px] border-r-red-100 border-b-[10px] border-b-transparent";
+    }
+  });
+
+  nextBtn.addEventListener('click', () => window.location.href = 'module_7.html');
+</script>
+</body>
+</html>

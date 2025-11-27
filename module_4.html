@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บทเรียนที่ 4: การใช้งานโปรแกรม Mu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans Thai', sans-serif; }
+    .teacher-img { transition: transform 0.3s ease; }
+    .teacher-img:hover { transform: scale(1.1) rotate(-2deg); }
+  </style>
+</head>
+<body class="bg-gray-100 flex flex-col h-screen">
+<header class="bg-white shadow-md w-full">
+  <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+    <div><h2 class="text-xl font-semibold text-gray-700">หน่วยที่ 2: Python</h2><h1 class="text-2xl font-bold text-blue-800">โมดูลที่ 4: การใช้งานโปรแกรม Mu</h1></div>
+    <a href="index.html" class="text-blue-600 hover:underline">กลับหน้าหลัก</a>
+  </div>
+</header>
+
+<main class="flex-1 container mx-auto px-6 py-6 flex flex-col md:flex-row gap-6 overflow-y-auto">
+  <div class="w-full md:w-1/2 bg-white rounded-xl shadow-lg p-6">
+    <h3 class="text-xl font-bold text-gray-800 mb-4">🎬 1. ดูวิดีโอ</h3>
+    <div class="aspect-video bg-gray-800 rounded-lg mb-4 overflow-hidden"><div id="player"></div></div>
+    <div>
+      <h4 class="font-semibold text-gray-700">ความคืบหน้า:</h4>
+      <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2 mb-1"><div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div></div>
+      <div id="video-status" class="text-sm text-gray-500">สถานะ: ยังไม่เริ่มเรียน</div>
+    </div>
+  </div>
+
+  <div class="w-full md:w-1/2 bg-white rounded-xl shadow-lg p-6 flex flex-col">
+    <div class="flex items-start gap-4 mb-6">
+      <img src="https://i.ibb.co/vvmFnzs5/2.png" alt="ครู" class="teacher-img rounded-full w-24 h-24 border-4 border-white shadow-md flex-shrink-0 cursor-pointer">
+      <div class="relative bg-blue-50 border border-blue-200 p-4 rounded-xl shadow-sm mt-4 hover:shadow-md transition-shadow">
+        <div class="absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-0 h-0 border-t-[10px] border-t-transparent border-r-[12px] border-r-blue-50 border-b-[10px] border-b-transparent"></div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">🛠️ 2. ภารกิจ: ติดตั้งโปรแกรม</h3>
+        <p class="text-gray-700">ทำตาม 3 ขั้นตอนนี้เพื่อติดตั้งโปรแกรม Mu แล้วแคปภาพหน้าจอมาส่งครูนะครับ</p>
+      </div>
+    </div>
+
+    <div class="space-y-4 flex-1">
+      <div class="flex gap-3"><div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">1</div><div><h4 class="font-semibold">ดาวน์โหลดและติดตั้ง</h4><a href="https://codewith.mu/en/download" target="_blank" class="text-blue-600 underline text-sm">ไปที่เว็บ Mu Editor</a></div></div>
+      <div class="flex gap-3"><div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">2</div><div><h4 class="font-semibold">ทดลองรันโค้ดแรก</h4><p class="text-sm text-gray-500">พิมพ์ <code>print("Hello")</code> แล้วกด Run</p></div></div>
+
+      <div class="flex gap-3">
+        <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">3</div>
+        <div class="w-full">
+          <h4 class="font-semibold mb-2">ส่งหลักฐาน (แคปหน้าจอ)</h4>
+          <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:bg-gray-50 hover:border-blue-400 transition-all relative group">
+            <input type="file" id="file-upload" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+            <div id="upload-placeholder" class="group-hover:text-blue-500 transition-colors text-gray-400"><p>คลิกเพื่ออัปโหลดภาพ</p></div>
+            <div id="file-info" class="hidden text-green-600 font-semibold"><span id="filename"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="teacher-feedback" class="mt-4 flex items-start gap-4 hidden transition-all duration-500 ease-out transform translate-y-4 opacity-0">
+      <img src="https://i.ibb.co/vvmFnzs5/2.png" alt="ครู" class="teacher-img rounded-full w-24 h-24 border-4 border-white shadow-md">
+      <div class="relative bg-green-100 border border-green-300 p-4 rounded-xl shadow-sm mt-4 w-full">
+        <div class="absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-0 h-0 border-t-[10px] border-t-transparent border-r-[12px] border-r-green-100 border-b-[10px] border-b-transparent"></div>
+        <p id="teacher-message"></p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="bg-white shadow-inner w-full p-4 mt-auto">
+  <div class="container mx-auto px-6 flex justify-between items-center">
+    <div id="submit-status" class="text-gray-500 font-medium">กรุณาดูวิดีโอให้จบก่อน</div>
+    <div>
+      <button id="submit-btn" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 transition-all disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>ส่งงาน</button>
+      <button id="next-btn" class="bg-gray-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-600 transition-all ml-4 hidden hover:shadow-lg hover:-translate-y-0.5">ไปบทเรียนถัดไป →</button>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // YouTube & Logic (ย่อ)
+  var tag = document.createElement('script'); tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0]; firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  var player, progressInterval;
+  const submitBtn = document.getElementById('submit-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const videoStatus = document.getElementById('video-status');
+  const fileUpload = document.getElementById('file-upload');
+  let videoWatched = false, fileUploaded = false;
+
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', { height: '100%', width: '100%', videoId: '03J8uc_OQSk', playerVars: { 'playsinline': 1, 'modestbranding': 1, 'rel': 0 }, events: { 'onStateChange': onPlayerStateChange } });
+  }
+  function onPlayerStateChange(e) {
+    if(e.data == YT.PlayerState.PLAYING) { videoStatus.innerText = "สถานะ: ▶️ กำลังเรียน..."; progressInterval = setInterval(()=>document.getElementById('progress-bar').style.width = ((player.getCurrentTime()/player.getDuration())*100)+'%', 1000); }
+    if(e.data == YT.PlayerState.ENDED) { videoStatus.innerHTML = "สถานะ: ✅ เรียนจบแล้ว!"; videoStatus.className="text-green-600 font-bold"; document.getElementById('progress-bar').style.width='100%'; videoWatched=true; checkEnable(); }
+  }
+  fileUpload.addEventListener('change', function() { if(this.files[0]) { fileUploaded=true; document.getElementById('filename').innerText=this.files[0].name; document.getElementById('upload-placeholder').classList.add('hidden'); document.getElementById('file-info').classList.remove('hidden'); checkEnable(); } });
+
+  function checkEnable() {
+    if(videoWatched && fileUploaded) {
+      submitBtn.disabled=false;
+      document.getElementById('submit-status').innerHTML="✅ พร้อมส่งงาน!";
+      document.getElementById('submit-status').className="text-green-600 font-bold";
+      submitBtn.classList.add('animate-bounce'); setTimeout(()=>submitBtn.classList.remove('animate-bounce'),1000);
+    }
+  }
+
+  function fireConfetti() {
+    var count = 200; var defaults = { origin: { y: 0.7 }, zIndex: 9999 };
+    function fire(particleRatio, opts) { confetti(Object.assign({}, defaults, opts, { particleCount: Math.floor(count * particleRatio) })); }
+    fire(0.25, { spread: 26, startVelocity: 55 }); fire(0.2, { spread: 60 });
+  }
+
+  submitBtn.addEventListener('click', function() {
+    fireConfetti();
+    document.getElementById('teacher-feedback').classList.remove('hidden', 'translate-y-4', 'opacity-0');
+    document.getElementById('teacher-message').innerHTML = "🎉 <strong>ติดตั้งสำเร็จ!</strong><br>คุณพร้อมที่จะเป็นโปรแกรมเมอร์แล้ว เตรียมตัวลุยโค้ดจริงในบทต่อไปได้เลย!";
+    submitBtn.disabled = true; submitBtn.textContent = "ส่งแล้ว"; submitBtn.className="bg-green-600 text-white font-bold py-2 px-6 rounded-lg cursor-not-allowed";
+    nextBtn.classList.remove('hidden'); nextBtn.classList.add('animate-bounce'); setTimeout(()=>nextBtn.classList.remove('animate-bounce'),2000);
+  });
+  nextBtn.addEventListener('click', ()=> window.location.href = 'module_5.html');
+</script>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บทเรียนที่ 1: การออกแบบขั้นตอนการทำงาน</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans Thai', sans-serif; }
+    /* เพิ่ม CSS เล็กน้อยเพื่อให้การเคลื่อนไหวนุ่มนวลขึ้น */
+    .teacher-img { transition: transform 0.3s ease; }
+    .teacher-img:hover { transform: scale(1.1) rotate(-2deg); }
+  </style>
+</head>
+<body class="bg-gray-100 flex flex-col h-screen">
+
+<header class="bg-white shadow-md w-full">
+  <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+    <div>
+      <h2 class="text-xl font-semibold text-gray-700">หน่วยที่ 2: Python</h2>
+      <h1 class="text-2xl font-bold text-blue-800">โมดูลที่ 1: การออกแบบขั้นตอนการทำงาน</h1>
+    </div>
+    <a href="index.html" class="text-blue-600 hover:underline transition-colors">กลับหน้าหลัก</a>
+  </div>
+</header>
+
+<main class="flex-1 container mx-auto px-6 py-6 flex flex-col md:flex-row gap-6 overflow-y-auto">
+
+  <div class="w-full md:w-1/2 bg-white rounded-xl shadow-lg p-6">
+    <h3 class="text-xl font-bold text-gray-800 mb-4">🎬 1. ดูวิดีโอ</h3>
+    <div class="aspect-video bg-gray-800 rounded-lg mb-4 overflow-hidden shadow-sm">
+      <div id="player"></div>
+    </div>
+    <div>
+      <h4 class="font-semibold text-gray-700">ความคืบหน้า:</h4>
+      <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2 mb-1 overflow-hidden">
+        <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+      </div>
+      <div id="video-status" class="text-sm text-gray-500 transition-colors duration-300">สถานะ: ยังไม่เริ่มเรียน</div>
+    </div>
+  </div>
+
+  <div class="w-full md:w-1/2 bg-white rounded-xl shadow-lg p-6 flex flex-col">
+
+    <div class="flex items-start gap-4 mb-6">
+      <img src="https://i.ibb.co/vvmFnzs5/2.png" alt="คุณครู" class="teacher-img rounded-full w-24 h-24 border-4 border-white shadow-md flex-shrink-0 bg-white object-cover cursor-pointer">
+      <div class="relative bg-blue-50 border border-blue-200 p-4 rounded-xl shadow-sm mt-4 w-full hover:shadow-md transition-shadow">
+        <div class="absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-0 h-0
+                                border-t-[10px] border-t-transparent
+                                border-r-[12px] border-r-blue-50
+                                border-b-[10px] border-b-transparent"
+             style="filter: drop-shadow(-1px 0px 1px rgba(0,0,0,0.05));">
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">✍️ 2. ภารกิจ: นักออกแบบผังงาน</h3>
+        <p class="text-gray-700">
+          <strong>โจทย์:</strong> สวัสดีครับนักเรียน! บทแรกนี้ครูอยากให้ลองฝึกคิดเป็นขั้นตอน<br>
+          ให้นักเรียนวาดผังงาน (Flowchart) เรื่อง <strong>"ขั้นตอนการทอดไข่เจียว"</strong> แล้วส่งไฟล์รูปภาพมาให้ครูตรวจนะครับ
+        </p>
+      </div>
+    </div>
+
+    <div class="space-y-6 flex-1 px-2">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">ขั้นตอนที่ 1: สร้างผังงาน</label>
+        <a href="https://app.diagrams.net/" target="_blank" class="group flex items-center justify-center w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-4 rounded-lg transition-all shadow-sm hover:shadow-md hover:-translate-y-1">
+          <svg class="w-5 h-5 mr-2 transition-transform group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+          ไปที่เว็บ diagrams.net เพื่อวาดผังงาน
+        </a>
+        <p class="text-xs text-gray-500 mt-1">*วาดเสร็จแล้วกด File > Export as > PNG/JPG นะครับ</p>
+      </div>
+
+      <div class="border-t border-gray-100 pt-4">
+        <label class="block text-sm font-medium text-gray-700 mb-2">ขั้นตอนที่ 2: ส่งงาน (อัปโหลดรูปภาพ)</label>
+        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:bg-gray-50 hover:border-blue-400 transition-all relative group">
+          <div class="space-y-1 text-center">
+            <svg class="mx-auto h-12 w-12 text-gray-400 group-hover:text-blue-500 transition-colors" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+              <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <div class="w-full text-center">
+              <div class="flex text-sm text-gray-600 justify-center">
+                <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                  <span>คลิกเพื่ออัปโหลด</span>
+                  <input id="file-upload" name="file_upload" type="file" class="sr-only" accept="image/png, image/jpeg, image/jpg">
+                </label>
+              </div>
+              <!-- Added an element to display the selected filename -->
+              <p id="file-name" class="mt-2 text-sm text-gray-900 italic"></p>
+              <p class="text-xs text-gray-500 mt-1">PNG, JPG, หรือ JPEG</p>
+            </div>
+          </div>
+        </div>
+
+    <div id="teacher-feedback" class="mt-6 flex items-start gap-4 hidden transition-all duration-500 ease-out transform translate-y-4 opacity-0">
+      <img src="https://i.ibb.co/vvmFnzs5/2.png" alt="คุณครู" class="teacher-img rounded-full w-24 h-24 border-4 border-white shadow-md flex-shrink-0 bg-white object-cover cursor-pointer">
+      <div id="teacher-bubble-response" class="relative bg-green-100 border border-green-300 p-4 rounded-xl shadow-sm mt-4 w-full">
+        <div class="teacher-bubble-tail absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-0 h-0
+                                border-t-[10px] border-t-transparent
+                                border-r-[12px] border-r-green-100
+                                border-b-[10px] border-b-transparent"
+             style="filter: drop-shadow(-1px 0px 1px rgba(0,0,0,0.05));">
+        </div>
+        <p id="teacher-message" class="text-gray-700"></p>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="bg-white shadow-inner w-full p-4 mt-auto z-10 relative">
+  <div class="container mx-auto px-6 flex justify-between items-center">
+    <div id="submit-status" class="text-gray-500 transition-colors duration-300 font-medium">
+      กรุณาดูวิดีโอให้จบก่อนส่งงาน
+    </div>
+    <div>
+      <button id="submit-btn" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 transition-all disabled:bg-gray-300 disabled:cursor-not-allowed hover:shadow-lg active:scale-95 disabled:hover:scale-100 disabled:hover:shadow-none" disabled>
+        ส่งงาน
+      </button>
+      <button id="next-btn" class="bg-gray-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-600 transition-all ml-4 hidden hover:shadow-lg hover:-translate-y-0.5">
+        ไปบทเรียนถัดไป →
+      </button>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // --- ส่วนของ YouTube API (เหมือนเดิม) ---
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  var player;
+  var progressInterval;
+  const submitBtn = document.getElementById('submit-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const videoStatus = document.getElementById('video-status');
+  const submitStatus = document.getElementById('submit-status');
+  const progressBar = document.getElementById('progress-bar');
+
+  const fileUpload = document.getElementById('file-upload');
+  const fileStatus = document.getElementById('file-status');
+  const filenameDisplay = document.getElementById('filename-display');
+
+  const teacherFeedback = document.getElementById('teacher-feedback');
+  const teacherMessage = document.getElementById('teacher-message');
+
+  let videoWatched = false;
+  let fileUploaded = false;
+
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '100%',
+      width: '100%',
+      videoId: 'VudDfgbWpE0', // ID บทที่ 1
+      playerVars: { 'playsinline': 1, 'modestbranding': 1, 'rel': 0 },
+      events: { 'onStateChange': onPlayerStateChange }
+    });
+  }
+
+  function onPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.PLAYING) {
+      videoStatus.innerHTML = "สถานะ: ▶️ กำลังเรียน...";
+      progressInterval = setInterval(updateProgress, 1000);
+    } else {
+      clearInterval(progressInterval);
+    }
+
+    if (event.data == YT.PlayerState.ENDED) {
+      videoStatus.innerHTML = "สถานะ: ✅ เรียนจบแล้ว!";
+      videoStatus.classList.add('text-green-600', 'font-semibold');
+      progressBar.style.width = '100%';
+      // เพิ่มเอฟเฟกต์เด้งเล็กน้อยเมื่อจบ
+      progressBar.classList.add('animate-pulse');
+      setTimeout(() => { progressBar.classList.remove('animate-pulse'); }, 1000);
+
+      videoWatched = true;
+      checkEnableSubmit();
+    }
+  }
+
+  function updateProgress() {
+    if (player && player.getPlayerState() == YT.PlayerState.PLAYING) {
+      var percentage = (player.getCurrentTime() / player.getDuration()) * 100;
+      progressBar.style.width = percentage + '%';
+    }
+  }
+
+  fileUpload.addEventListener('change', function() {
+    if (fileUpload.files.length > 0) {
+      fileUploaded = true;
+      filenameDisplay.textContent = fileUpload.files[0].name;
+      fileStatus.classList.remove('hidden');
+      checkEnableSubmit();
+    } else {
+      fileUploaded = false;
+      fileStatus.classList.add('hidden');
+      checkEnableSubmit();
+    }
+  });
+
+  function checkEnableSubmit() {
+    if (videoWatched && fileUploaded) {
+      submitBtn.disabled = false;
+      submitStatus.innerHTML = "✅ ดูวิดีโอจบและแนบไฟล์แล้ว <strong>พร้อมส่ง!</strong>";
+      submitStatus.className = "text-green-600 font-bold transition-colors duration-300";
+      // เอฟเฟกต์ให้ปุ่มส่งงานเด่นขึ้น
+      submitBtn.classList.add('animate-bounce');
+      setTimeout(() => { submitBtn.classList.remove('animate-bounce'); }, 1000);
+
+    } else if (videoWatched && !fileUploaded) {
+      submitStatus.textContent = "✅ ดูวิดีโอจบแล้ว! รออัปโหลดไฟล์งาน...";
+      submitStatus.className = "text-green-600 transition-colors duration-300";
+    } else if (!videoWatched && fileUploaded) {
+      submitStatus.textContent = "แนบไฟล์แล้ว (รอวิดีโอจบ)";
+      submitStatus.className = "text-gray-500 transition-colors duration-300";
+    } else {
+      submitStatus.textContent = "กรุณาดูวิดีโอให้จบก่อนส่งงาน";
+      submitStatus.className = "text-gray-500 transition-colors duration-300";
+      submitBtn.disabled = true;
+    }
+  }
+
+  // [เพิ่ม 3] ฟังก์ชันยิงพลุ (Confetti)
+  function fireConfetti() {
+    var count = 200;
+    var defaults = {
+      origin: { y: 0.7 },
+      zIndex: 9999 /* ให้พลุอยู่เหนือทุกอย่าง */
+    };
+
+    function fire(particleRatio, opts) {
+      confetti(Object.assign({}, defaults, opts, {
+        particleCount: Math.floor(count * particleRatio)
+      }));
+    }
+
+    fire(0.25, { spread: 26, startVelocity: 55, });
+    fire(0.2, { spread: 60, });
+    fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+    fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+    fire(0.1, { spread: 120, startVelocity: 45, });
+  }
+
+  // --- Logic การส่งงาน ---
+  submitBtn.addEventListener('click', function() {
+    // 1. เรียกใช้เอฟเฟกต์พลุทันทีที่กด!
+    fireConfetti();
+
+    // 2. แสดง Feedback จากครู (เพิ่ม class สำหรับ animation การปรากฏตัว)
+    teacherFeedback.classList.remove('hidden', 'translate-y-4', 'opacity-0');
+
+    teacherMessage.innerHTML = "🎉 <strong>เยี่ยมมากครับ!</strong><br>ครูได้รับไฟล์ผังงานเรียบร้อยแล้ว การวางแผนที่ดีคือจุดเริ่มต้นของการเขียนโปรแกรมที่ดีครับ ไปลุยบทต่อไปกันเลย!";
+
+    submitStatus.textContent = "🎉 ส่งงานสำเร็จแล้ว!";
+    submitBtn.disabled = true;
+    submitBtn.textContent = "ส่งแล้ว";
+    submitBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+    submitBtn.classList.add('bg-green-600');
+
+    nextBtn.classList.remove('hidden');
+    // ให้ปุ่มถัดไปเด้งเรียกร้องความสนใจ
+    nextBtn.classList.add('animate-bounce');
+    setTimeout(() => { nextBtn.classList.remove('animate-bounce'); }, 2000);
+  });
+
+  nextBtn.addEventListener('click', function() {
+    window.location.href = 'module_2.html';
+  });
+
+</script>
+<script>
+  const fileInput = document.getElementById('file-upload');
+  const fileNameDisplay = document.getElementById('file-name');
+
+  fileInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      fileNameDisplay.textContent = `เลือกไฟล์: ${file.name}`;
+    } else {
+      fileNameDisplay.textContent = '';
+    }
+  });
+</script>
+</body>
+</html>

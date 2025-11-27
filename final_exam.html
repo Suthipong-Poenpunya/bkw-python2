@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>แบบทดสอบท้ายบท: Python & Algorithms</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans Thai', sans-serif; }
+    .option-btn:hover { transform: translateY(-2px); }
+    .fade-in { animation: fadeIn 0.3s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body class="bg-blue-50 flex flex-col min-h-screen">
+
+<!-- ส่วนหัวของเว็บ -->
+<header class="bg-white shadow-md w-full sticky top-0 z-10">
+  <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+    <div>
+      <h2 class="text-lg font-semibold text-gray-600">หน่วยที่ 2: Python</h2>
+      <h1 class="text-2xl font-bold text-blue-800">📝 แบบทดสอบท้ายบท (Final Exam)</h1>
+    </div>
+    <a href="index.html" class="text-gray-500 hover:text-blue-600 transition-colors flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" /></svg>
+      กลับหน้าหลัก
+    </a>
+  </div>
+</header>
+
+<!-- เนื้อหาหลัก -->
+<main class="flex-1 container mx-auto px-4 py-8 md:px-8 flex flex-col md:flex-row gap-8 items-start max-w-6xl">
+
+  <!-- คอลัมน์ซ้าย: คุณครูและสถานะ -->
+  <div class="w-full md:w-1/3 flex flex-col items-center md:items-start sticky top-24">
+    <!-- การ์ดคุณครู -->
+    <div class="bg-white p-6 rounded-2xl shadow-lg border border-blue-100 w-full flex flex-col items-center text-center relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-400 to-purple-500"></div>
+
+      <!-- รูปคุณครู -->
+      <img src="https://i.ibb.co/vvmFnzs5/2.png" alt="คุณครู" class="w-28 h-28 rounded-full border-4 border-white shadow-md mb-4 bg-blue-50 object-cover">
+
+      <h3 class="text-xl font-bold text-gray-800">คุณครูใจดี</h3>
+      <p class="text-sm text-gray-500 mb-4">วิชาวิทยาการคำนวณ ม.2</p>
+
+      <!-- กล่องคำพูด (Teacher Bubble) -->
+      <div class="relative bg-blue-50 p-4 rounded-xl text-sm text-gray-700 w-full">
+        <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-blue-50 rotate-45"></div>
+        <p id="teacher-msg">ตั้งสติให้ดี อ่านโจทย์ให้รอบคอบนะคะ! มีทั้งหมด 20 ข้อ ทำให้เต็มที่เลย ครูเอาใจช่วย!</p>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="w-full mt-6">
+        <div class="flex justify-between text-xs text-gray-500 mb-1">
+          <span>ความคืบหน้า</span>
+          <span id="progress-text">ข้อ 1 / 20</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+          <div id="progress-bar" class="bg-blue-500 h-3 rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- คอลัมน์ขวา: พื้นที่ทำข้อสอบ -->
+  <div class="w-full md:w-2/3">
+
+    <!-- หน้าจอเริ่มทำข้อสอบ (Intro) -->
+    <div id="quiz-intro" class="bg-white rounded-2xl shadow-lg p-8 border border-gray-200 text-center">
+      <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>
+      </div>
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">พร้อมสอบหรือยัง?</h2>
+      <p class="text-gray-600 mb-8">แบบทดสอบนี้มีทั้งหมด 20 ข้อ ครอบคลุมเนื้อหาตั้งแต่ Flowchart, ตัวแปร, ไปจนถึง if-else</p>
+      <button onclick="startQuiz()" class="bg-blue-600 text-white font-bold py-3 px-10 rounded-full hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 text-lg">
+        เริ่มทำแบบทดสอบ
+      </button>
+    </div>
+
+    <!-- หน้าจอคำถาม (Quiz Container) -->
+    <div id="quiz-container" class="hidden bg-white rounded-2xl shadow-lg p-8 border border-gray-200 min-h-[400px] relative">
+      <!-- เลขข้อ -->
+      <span class="absolute top-4 right-4 bg-gray-100 text-gray-500 text-xs font-bold px-2 py-1 rounded">SCORE: <span id="current-score">0</span></span>
+
+      <h3 id="question-text" class="text-xl md:text-2xl font-bold text-gray-800 mb-8 leading-relaxed fade-in">
+        กำลังโหลดคำถาม...
+      </h3>
+
+      <!-- ตัวเลือกคำตอบ -->
+      <div id="options-container" class="space-y-3">
+        <!-- Options will be injected here via JS -->
+      </div>
+    </div>
+
+    <!-- หน้าจอสรูปผล (Result) -->
+    <div id="quiz-result" class="hidden bg-white rounded-2xl shadow-lg p-8 border border-gray-200 text-center fade-in">
+      <div id="result-icon" class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <!-- Icon changes dynamically -->
+      </div>
+      <h2 class="text-3xl font-bold text-gray-800 mb-2">สอบเสร็จแล้ว!</h2>
+      <p class="text-gray-600 mb-6">คะแนนของคุณคือ</p>
+
+      <div class="text-6xl font-black text-blue-600 mb-2" id="final-score">0</div>
+      <p class="text-gray-400 text-sm mb-8">จากคะแนนเต็ม 20 คะแนน</p>
+      <p id="save-status" class="text-sm text-gray-500 mb-4">กำลังบันทึกคะแนน...</p>
+
+      <div class="flex justify-center gap-4">
+        <button onclick="location.reload()" class="bg-gray-100 text-gray-700 font-bold py-2 px-6 rounded-lg hover:bg-gray-200 transition-colors">
+          ทำใหม่อีกครั้ง
+        </button>
+        <a href="index.html" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors shadow-md">
+          กลับหน้าบทเรียน
+        </a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+  // --- สำคัญ! ใส่ URL ของ Google Apps Script ที่คุณ Deploy แล้วตรงนี้ ---
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwoTjgil0LTrAdLVZNrPRyNFzbBSPmYiVRmIHwN6ZPF0dG7caGAlo3UBCfiORntPKm8/exec";
+
+  // --- ฐานข้อมูลคำถาม (20 ข้อ) ---
+  const questions = [
+    {
+      q: "สัญลักษณ์ใดในผังงาน (Flowchart) ที่ใช้สำหรับเริ่มต้น (Start) และสิ้นสุด (End) การทำงาน?",
+      options: ["สี่เหลี่ยมผืนผ้า (Process)", "สี่เหลี่ยมข้าวหลามตัด (Decision)", "วงรี (Terminator)", "สี่เหลี่ยมด้านขนาน (Input/Output)"],
+      correct: 2
+    },
+    {
+      q: "การเขียนอัลกอริทึมรูปแบบใด ที่ใช้ภาษาพูดหรือภาษาเขียนทั่วไปในการอธิบายขั้นตอนการทำงาน?",
+      options: ["รหัสจำลอง (Pseudocode)", "ผังงาน (Flowchart)", "ภาษาธรรมชาติ (Natural Language)", "ภาษาคอมพิวเตอร์ (Programming Language)"],
+      correct: 2
+    },
+    {
+      q: "ข้อใด **ไม่ใช่** กฎการตั้งชื่อตัวแปรในภาษา Python?",
+      options: ["ห้ามขึ้นต้นด้วยตัวเลข", "ห้ามใช้อักขระพิเศษ ยกเว้นเครื่องหมายขีดล่าง (_)", "ตัวพิมพ์เล็กและตัวพิมพ์ใหญ่ถือเป็นตัวเดียวกัน", "ห้ามใช้คำสงวน (Reserved Words)"],
+      correct: 2
+    },
+    {
+      q: "หากต้องการเก็บข้อมูล 'เกรดเฉลี่ย' ที่มีค่าเป็นทศนิยม (เช่น 3.75) ควรใช้ข้อมูลชนิดใด?",
+      options: ["int", "float", "string", "bool"],
+      correct: 1
+    },
+    {
+      q: "คำสั่งใดในภาษา Python ใช้สำหรับ **แสดงผลลัพธ์** ออกทางหน้าจอ?",
+      options: ["input()", "print()", "scan()", "output()"],
+      correct: 1
+    },
+    {
+      q: "ผลลัพธ์ของ `10 // 3` ในภาษา Python คือเท่าไหร่?",
+      options: ["3.33", "3", "1", "4"],
+      correct: 1
+    },
+    {
+      q: "เครื่องหมาย `%` (Modulo) ในภาษา Python ทำหน้าที่อะไร?",
+      options: ["หาค่าร้อยละ", "หารเอาผลลัพธ์", "หารเอาเศษ", "ยกกำลัง"],
+      correct: 2
+    },
+    {
+      q: "รหัสควบคุม (Escape Sequence) ตัวใด ที่ใช้สำหรับ **ขึ้นบรรทัดใหม่**?",
+      options: ["\\t", "\\n", "\\r", "\\b"],
+      correct: 1
+    },
+    {
+      q: "หากต้องการแสดงผลค่าของตัวแปรที่เป็น **จำนวนเต็ม (Integer)** ด้วยรหัสรูปแบบข้อมูล ควรใช้อะไร?",
+      options: ["%s", "%f", "%d", "%c"],
+      correct: 2
+    },
+    {
+      q: "ฟังก์ชัน `input()` จะรับค่าเข้ามาเป็นข้อมูลชนิดใดเสมอ (โดยพื้นฐาน)?",
+      options: ["Integer (จำนวนเต็ม)", "Float (ทศนิยม)", "String (ข้อความ)", "Boolean (ค่าความจริง)"],
+      correct: 2
+    },
+    {
+      q: "สัญลักษณ์ใดใน Flowchart ที่ใช้สำหรับ **การตัดสินใจ (Decision)**?",
+      options: ["สี่เหลี่ยมผืนผ้า", "วงกลม", "สี่เหลี่ยมข้าวหลามตัด", "สี่เหลี่ยมด้านขนาน"],
+      correct: 2
+    },
+    {
+      q: "ข้อใดคือรูปแบบของโครงสร้างแบบ **Single Selection**?",
+      options: ["if", "if-else", "if-elif-else", "for loop"],
+      correct: 0
+    },
+    {
+      q: "คำสั่ง `if-else` เหมาะกับสถานการณ์ใดมากที่สุด?",
+      options: ["ตรวจสอบเงื่อนไขเดียว (ทำ/ไม่ทำ)", "ตรวจสอบเงื่อนไขที่มี 2 ทางเลือกชัดเจน", "ตรวจสอบหลายเงื่อนไขที่มีมากกว่า 3 ทางเลือก", "ทำซ้ำขั้นตอนเดิมหลายๆ รอบ"],
+      correct: 1
+    },
+    {
+      q: "สัญลักษณ์ตัวดำเนินการทางคณิตศาสตร์ใน Python ข้อใดหมายถึง **ยกกำลัง**?",
+      options: ["^", "*", "**", "exp"],
+      correct: 2
+    },
+    {
+      q: "หากเขียนโค้ด `x = 5` แล้วบรรทัดต่อมา `x = x + 2` ค่าของ x จะเป็นเท่าไหร่?",
+      options: ["5", "2", "7", "Error"],
+      correct: 2
+    },
+    {
+      q: "ข้อใดคือการเขียนเงื่อนไข 'คะแนนมากกว่าหรือเท่ากับ 50' ที่ถูกต้อง?",
+      options: ["score > 50", "score => 50", "score >= 50", "score = > 50"],
+      correct: 2
+    },
+    {
+      q: "ใน Python เครื่องหมาย `:` (Colon) จำเป็นต้องใส่ที่ตำแหน่งใดของคำสั่ง `if`?",
+      options: ["หน้าคำว่า if", "หลังเงื่อนไข", "หลังคำสั่ง print", "ไม่ต้องใส่เลย"],
+      correct: 1
+    },
+    {
+      q: "การย่อหน้า (Indentation) ในภาษา Python มีความสำคัญอย่างไร?",
+      options: ["เพื่อความสวยงามเท่านั้น", "ใช้ระบุขอบเขตของกลุ่มคำสั่ง (Block)", "ใช้แทนการกด Enter", "ไม่มีความสำคัญ คอมไพเลอร์จะจัดการเอง"],
+      correct: 1
+    },
+    {
+      q: "หากต้องการตรวจสอบหลายเงื่อนไข เช่น ตัดเกรด A, B, C, D, F ควรใช้โครงสร้างใด?",
+      options: ["if อย่างเดียวหลายๆ ครั้ง", "if-else", "if-elif-else", "input-print"],
+      correct: 2
+    },
+    {
+      q: "ข้อใด **ไม่ใช่** ประโยชน์ของการเขียนผังงาน (Flowchart)?",
+      options: ["ช่วยลำดับความคิดให้เป็นระบบ", "สื่อสารขั้นตอนการทำงานให้ผู้อื่นเข้าใจได้ง่าย", "ช่วยตรวจสอบข้อผิดพลาดของตรรกะ", "ช่วยให้คอมพิวเตอร์ประมวลผลได้เร็วขึ้น"],
+      correct: 3
+    }
+  ];
+
+  // --- ตัวแปรระบบ ---
+  let currentQIndex = 0;
+  let score = 0;
+  let userData = null;
+
+  // --- Elements ---
+  const teacherMsg = document.getElementById('teacher-msg');
+  const progressBar = document.getElementById('progress-bar');
+  const progressText = document.getElementById('progress-text');
+  const quizIntro = document.getElementById('quiz-intro');
+  const quizContainer = document.getElementById('quiz-container');
+  const quizResult = document.getElementById('quiz-result');
+  const questionText = document.getElementById('question-text');
+  const optionsContainer = document.getElementById('options-container');
+  const currentScoreDisplay = document.getElementById('current-score');
+  const finalScoreDisplay = document.getElementById('final-score');
+  const resultIcon = document.getElementById('result-icon');
+  const saveStatus = document.getElementById('save-status');
+
+  // --- เริ่มต้น ---
+  window.onload = function() {
+    // ตรวจสอบว่ามีชื่อนักเรียนหรือยัง
+    const storedUser = localStorage.getItem('python_student');
+    if (!storedUser) {
+      alert("กรุณาลงทะเบียนที่หน้าหลักก่อนทำแบบทดสอบครับ");
+      window.location.href = "index.html";
+      return;
+    }
+    userData = JSON.parse(storedUser);
+    teacherMsg.textContent = `สวัสดี ${userData.name.split(' ')[0]}! พร้อมสอบแล้วใช่ไหมครับ ตั้งใจทำนะ`;
+  };
+
+  function startQuiz() {
+    quizIntro.classList.add('hidden');
+    quizContainer.classList.remove('hidden');
+    loadQuestion();
+    updateTeacher("start");
+  }
+
+  function loadQuestion() {
+    const q = questions[currentQIndex];
+    questionText.innerHTML = `${currentQIndex + 1}. ${q.q}`;
+    progressText.textContent = `ข้อ ${currentQIndex + 1} / ${questions.length}`;
+    progressBar.style.width = `${((currentQIndex) / questions.length) * 100}%`;
+
+    optionsContainer.innerHTML = '';
+    q.options.forEach((opt, index) => {
+      const btn = document.createElement('button');
+      btn.className = "option-btn w-full text-left p-4 rounded-xl border-2 border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all duration-200 flex items-center group";
+      btn.onclick = () => checkAnswer(index);
+
+      btn.innerHTML = `
+                    <span class="w-8 h-8 rounded-full bg-gray-100 text-gray-500 font-bold flex items-center justify-center mr-4 group-hover:bg-blue-500 group-hover:text-white transition-colors">${['ก','ข','ค','ง'][index]}</span>
+                    <span class="text-gray-700 font-medium text-lg">${opt}</span>
+                `;
+      optionsContainer.appendChild(btn);
+    });
+
+    questionText.classList.remove('fade-in');
+    void questionText.offsetWidth; // Trigger reflow
+    questionText.classList.add('fade-in');
+  }
+
+  function checkAnswer(selectedIndex) {
+    const correctIndex = questions[currentQIndex].correct;
+    const buttons = optionsContainer.getElementsByTagName('button');
+
+    // ล็อคปุ่มทั้งหมด
+    for(let btn of buttons) {
+      btn.disabled = true;
+      btn.classList.add('cursor-not-allowed', 'opacity-70');
+    }
+
+    // ตรวจคำตอบ
+    if (selectedIndex === correctIndex) {
+      score++;
+      buttons[selectedIndex].classList.replace('border-gray-200', 'border-green-500');
+      buttons[selectedIndex].classList.replace('bg-white', 'bg-green-50');
+      buttons[selectedIndex].querySelector('span:first-child').className = "w-8 h-8 rounded-full bg-green-500 text-white font-bold flex items-center justify-center mr-4";
+      updateTeacher("correct");
+    } else {
+      buttons[selectedIndex].classList.replace('border-gray-200', 'border-red-500');
+      buttons[selectedIndex].classList.replace('bg-white', 'bg-red-50');
+      buttons[selectedIndex].querySelector('span:first-child').className = "w-8 h-8 rounded-full bg-red-500 text-white font-bold flex items-center justify-center mr-4";
+
+      // เฉลยข้อที่ถูก
+      buttons[correctIndex].classList.replace('border-gray-200', 'border-green-500');
+      buttons[correctIndex].classList.add('bg-green-50');
+      updateTeacher("wrong");
+    }
+
+    currentScoreDisplay.textContent = score;
+
+    // รอ 1.2 วินาที แล้วไปข้อถัดไป
+    setTimeout(() => {
+      currentQIndex++;
+      if (currentQIndex < questions.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    }, 1200);
+  }
+
+  function showResult() {
+    quizContainer.classList.add('hidden');
+    quizResult.classList.remove('hidden');
+    finalScoreDisplay.textContent = score;
+    progressBar.style.width = '100%';
+
+    let grade = "";
+    let iconHtml = "";
+
+    if (score >= 16) {
+      grade = "ยอดเยี่ยมมาก! (Grade A)";
+      iconHtml = `<svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+      updateTeacher("finish_high");
+    } else if (score >= 10) {
+      grade = "ผ่านเกณฑ์ครับ (Pass)";
+      iconHtml = `<svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+      updateTeacher("finish_mid");
+    } else {
+      grade = "พยายามอีกนิดนะครับ (Try Again)";
+      iconHtml = `<svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>`;
+      updateTeacher("finish_low");
+    }
+
+    resultIcon.innerHTML = iconHtml;
+    resultIcon.className = `w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 ${score >= 16 ? 'bg-green-100' : score >= 10 ? 'bg-yellow-100' : 'bg-red-100'}`;
+
+    // --- บันทึกคะแนน ---
+    saveScore(score);
+  }
+
+  function updateTeacher(state) {
+    const msgs = {
+      "start": ["ตั้งใจทำนะครับ อ่านโจทย์ดีๆ", "พร้อมแล้วลุยเลย!", "20 ข้อ ไม่ยากเกินความสามารถแน่นอน"],
+      "correct": ["เยี่ยมมาก! ถูกต้องครับ", "เก่งมากครับ!", "สุดยอด! ข้อต่อไปเลย", "ความจำดีมากครับ"],
+      "wrong": ["ไม่เป็นไรครับ เอาใหม่นะ", "อ๋อ... ข้อนี้ตอบแบบนี้นี่เอง จำไว้นะครับ", "ผิดเป็นครูครับ สู้ต่อ!", "เกือบถูกแล้ว เช็กดีๆ นะครับ"],
+      "finish_high": "ภูมิใจในตัวคุณมากครับ! คะแนนสูงมาก คุณพร้อมสำหรับการเขียนโปรแกรมขั้นสูงแล้ว!",
+      "finish_mid": "ทำได้ดีครับ! ผ่านเกณฑ์แล้ว ทบทวนอีกนิดจะแม่นยำขึ้นแน่นอน",
+      "finish_low": "ไม่ต้องเสียใจนะครับ กลับไปทบทวนบทเรียนแล้วมาลองใหม่ ครูเชื่อว่าครั้งหน้าทำได้แน่นอน!"
+    };
+
+    let msgArray = Array.isArray(msgs[state]) ? msgs[state] : [msgs[state]];
+    if (state.startsWith("finish")) {
+      teacherMsg.innerText = msgs[state];
+    } else {
+      const randomMsg = msgArray[Math.floor(Math.random() * msgArray.length)];
+      teacherMsg.innerText = randomMsg;
+    }
+  }
+
+  // --- ฟังก์ชันส่งคะแนนไป Google Sheets และบันทึก LocalStorage ---
+  function saveScore(finalScore) {
+    // 1. อัปเดต LocalStorage (เพื่อให้ index.html รู้)
+    if (userData) {
+      userData.finalScore = finalScore;
+      localStorage.setItem('python_student', JSON.stringify(userData));
+      console.log("Saved to LocalStorage:", userData);
+    }
+
+    // 2. ส่งข้อมูลไป Google Sheets
+    const payload = {
+      type: 'score', // ระบุประเภทข้อมูลว่าเป็น "คะแนน"
+      name: userData.name,
+      class: userData.class,
+      no: userData.no,
+      score: finalScore,
+      timestamp: new Date().toLocaleString('th-TH')
+    };
+
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      mode: 'no-cors', // เลี่ยงปัญหา CORS
+      headers: { 'Content-Type': 'application/json' }
+    }).then(() => {
+      saveStatus.textContent = "✅ บันทึกคะแนนเรียบร้อยแล้ว!";
+      saveStatus.classList.add("text-green-600");
+      saveStatus.classList.remove("text-gray-500");
+    }).catch(err => {
+      console.error("Save Error:", err);
+      saveStatus.textContent = "⚠️ บันทึกออนไลน์ไม่สำเร็จ (แต่บันทึกในเครื่องแล้ว)";
+      saveStatus.classList.add("text-yellow-600");
+    });
+  }
+
+</script>
+</body>
+</html>
